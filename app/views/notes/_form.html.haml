@@ -1,0 +1,7 @@
+:ruby
+  inputs = [
+    [:title,    t("note.title"),    :text, maxlength: Note::MAX_TITLE],
+    [:markdown, t("note.markdown"), :area, rows: 20],
+    [:draft,    t("note.draft"),    :check]
+  ]
+= render "utils/crud/form", object: note, index: notes_path, inputs: inputs, title: title

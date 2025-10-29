@@ -1,0 +1,11 @@
+- set_meta_tags title: t("session.sign_in")
+
+.row
+  %div{class: center(xx: 3, xl: 4, lg: 5, md: 6, sm: 7, xs: 8)}
+    = form_with url: session_path, local: true, html: { class: "crud" } do |f|
+      %section
+        .body
+          .mb-3= render "utils/crud/text", form: f, label: t("user.email"), param: :email
+          .mb-3= render "utils/crud/password", form: f, label: t("user.password")
+        .footer
+          .text-center= f.submit t("session.sign_in"), class: "btn btn-primary"

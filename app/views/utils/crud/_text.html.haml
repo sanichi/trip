@@ -1,0 +1,6 @@
+- defined?(autofocus) || autofocus = nil
+- defined?(maxlength) || maxlength = nil
+- defined?(placeholder) || placeholder = nil
+
+= form.label param, label, class: "form-label"
+= form.text_field param, autofocus: autofocus, placeholder: placeholder, maxlength: maxlength, class: "form-control"

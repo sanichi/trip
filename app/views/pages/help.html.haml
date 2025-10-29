@@ -1,0 +1,46 @@
+- set_meta_tags title: t("pages.help.title")
+
+%section
+  .header
+    %h3.d-inline= t("pages.help.title")
+  .body
+    %h5 Links
+    %p
+      To link to another note, first find out it's ID number and then
+      insert a link something like the following example:
+    %pre
+      [this other note](/notes/2)
+    %h5 Images
+    %p
+      Add a special link something like this:
+    %pre
+      ![this is a great photo](logo.png "200R")
+    %p
+      The text inside the square brackets is for assitive technologies and doesn't normally display.
+      The image source goes after the opening parenthesis.
+      The text in quotes is optional and in regular markdown would be used to give the image a
+      title but, in this application, is used instead to place and resize the image according
+      to the following rules:
+    %ul
+      %li
+        By default, the image will be centered but if the letter R (or L) appears,
+        it will instead be floated to the right (or left).
+      %li
+        By default, the image width will be resized to 300 pixels, but if a number
+        between 100 and 300 appears then this will be the width, or if a number between
+        10 and 100 appears followed by a percent sign, then the width will be this
+        fraction of the news item width.
+    %p
+      If the image source includes no forward slashes, it's interpreted as relative to the
+      public directory (e.g. a relative URL of /logo.png in the example given).
+    %h5 Tables
+    %p
+      Entered like this.
+    %pre
+      |Good    |Bad|
+      |--------|---|
+      |Haml    |Erb|
+      |Rspec   |Test::Unit|
+      |Spockets|Webpack|
+    %p
+      You don't have to line up the columns, but it looks better.

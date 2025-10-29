@@ -1,0 +1,9 @@
+- defined?(placeholder) || placeholder = "#{label}..."
+- defined?(size)        || size = 10
+- defined?(value)       || value = params[param]
+- list_id = "#{param}-list"
+
+= text_field_tag param, value, class: "form-control", list: list_id, placeholder: placeholder, size: size
+%datalist{id: list_id}
+  - data.each do |option|
+    %option{value: option}

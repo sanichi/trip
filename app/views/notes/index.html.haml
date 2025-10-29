@@ -1,0 +1,27 @@
+:ruby
+  set_meta_tags title: t("note.notes")
+  inputs = [
+    [:query,   t("search"),      :text,   "offset-md-1 md-4", size: 16, placeholder: t("search"), autofocus: true],
+    [:user_id, t("note.author"), :select, "md-3",             menu: author_menu(params[:user_id])],
+    [:draft,   t("note.draft"),  :select, "md-3",             menu: draft_menu(params[:draft])],
+  ]
+
+%section
+  .header{class: "#{can?(:create, Note) ? '' : 'text-center'}"}
+    %h3.d-inline= t("note.notes")
+    - if can?(:create, Note)
+      .float-end.mt-1= link_to t("note.new"), new_note_path, class: "btn btn-primary btn-sm"
+  .body
+    = render "utils/search/form", index: notes_path, inputs: inputs
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table.mt-4{class: "table table-bordered table-sm"}
+        %thead
+          %tr
+            %th= t("note.title")
+            %th= t("note.author")
+            %th.text-center= t("note.draft")
+            %th.text-center= t("note.updated")
+            %th.text-center= t("note.created")
+        %tbody
+          = render partial: "note", collection: @notes.matches
+          = render "utils/pagination/links", pager: @notes, columns: 5

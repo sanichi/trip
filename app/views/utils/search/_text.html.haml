@@ -1,0 +1,6 @@
+- defined?(placeholder) || placeholder = label
+- defined?(autofocus)   || autofocus = nil
+- defined?(size)        || size = 10
+- defined?(value)       || value = params[param]
+
+= text_field_tag param, value, class: "form-control", placeholder: placeholder, size: size, autofocus: autofocus

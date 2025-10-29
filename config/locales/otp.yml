@@ -1,0 +1,8 @@
+en:
+  otp:
+    challenge: OTP Challenge
+    invalid: OTP Invalid
+    new: New OTP
+    otp: OTP
+    required: OTP Required
+    submit: Submit

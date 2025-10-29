@@ -1,0 +1,25 @@
+- set_meta_tags title: @user.name
+
+.row
+  %div{class: center(xl: 4, lg: 6, md:8, sm: 10)}
+    %section
+      .header.text-center
+        %h3.d-inline= @user.name
+      .body
+        %table{class: "table table-bordered mt-3"}
+          %tbody
+            %tr
+              %th= t("user.email")
+              %td= @user.email
+            %tr
+              %th= t("user.admin")
+              %td= admin(@user)
+            %tr
+              %th= t("otp.otp")
+              %td
+                = otp_required(@user)
+                = otp_active(@user)
+      .footer
+        - if can?(:edit, @user)
+          = link_to t("edit"), edit_user_path(@user), class: "btn btn-primary btn-sm"
+        = link_to t("user.users"), users_path, class: "btn btn-success btn-sm"

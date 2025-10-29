@@ -1,0 +1,96 @@
+// Bootstrap
+@import "bootstrap"
+
+// Navbar
+nav
+  @extend .navbar, .navbar-expand-md, .navbar-light, .bg-light, .border, .border-secondary, .rounded, .mb-3
+
+  &>a
+    @extend .navbar-brand
+
+    img
+      @extend .d-inline-block, .align-top
+
+  button
+    @extend .navbar-toggler
+
+    span
+      @extend .navbar-toggler-icon
+
+  #navbar
+    &>ul
+      @extend .navbar-nav
+
+      &>li
+        @extend .nav-item
+
+        &>a
+          @extend .nav-link
+
+      &>li.dropdown
+        &>ul
+          &>li
+            &>a
+              @extend .dropdown-item
+
+// Sections
+section
+  @extend .card, .border-secondary, .mb-4
+
+  .header
+    @extend .card-header
+
+  .body
+    @extend .card-body
+    overflow: hidden
+
+  .footer
+    @extend .card-footer
+
+// For notes
+.note
+
+  table
+    @extend .table-bordered, .table-striped, .table-light, .mb-3
+    margin-left: auto
+    margin-right: auto
+
+    td
+      @extend .p-1, .table-success
+
+    th
+      @extend .p-1, .table-info
+
+// Crud forms
+form.crud
+
+  textarea
+    @extend .font-monospace
+    font-size: 0.9rem
+    height: 100%
+
+  div.field_with_errors
+    label
+      color: $red
+    input[type="text"], input[type="password"], textarea, select
+      background: lighten($pink, 40%)
+
+// Flash notices. Note that, for dismissal, the class "alert" needs to be explicitly present in the HTML.
+.flash
+  text-align: center
+  margin-top: -1rem
+  margin-bottom: 1rem
+
+  &.notice
+    @extend .alert-success
+
+  &.rails-alert
+    @extend .alert-danger
+
+// Pre's
+pre
+  @extend .border, .border-dark, .p-2
+
+// Links
+a
+  @extend .text-decoration-none

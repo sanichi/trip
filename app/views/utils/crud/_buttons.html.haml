@@ -1,0 +1,4 @@
+= form.submit save, class: "btn btn-primary btn-sm"
+= link_to t("cancel"), object.new_record?? index : object, class: "btn btn-secondary btn-sm"
+- if !object.new_record? && can?(:destroy, object)
+  = link_to t("delete"), object, class: "btn btn-danger btn-sm", data: { turbo_method: :delete, turbo_confirm: t("sure") }

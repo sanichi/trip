@@ -1,0 +1,5 @@
+- defined?(multiple) || multiple = false
+- defined?(size) || size = 1
+
+= form.label param, label, class: "form-label"
+= form.select param, menu, { }, { multiple: multiple, size: size, class: "form-select" }

@@ -1,0 +1,14 @@
+- defined?(button) || button = nil
+- defined?(frame)  || frame = "results"
+
+= form_tag index, method: :get, "data-turbo-frame" => frame, class: "row g-3" do
+  - inputs.each do | param, label, type, cols, options |
+    %div{class: col(cols)}
+      = label_tag param, label, class: "visually-hidden"
+      = render "utils/search/#{type}", { param: param, label: label }.merge(options || {})
+  - if button
+    %div{class: col(button)}
+      = button_tag t("search"), type: "submit", class: "btn btn-success"
+  - else
+    -# to ensure forms with more than one text input submit when the enter key is pressed
+    = button_tag "x", type: "submit", class: "visually-hidden btn-sm"

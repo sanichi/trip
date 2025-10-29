@@ -1,0 +1,24 @@
+- set_meta_tags title: t("user.users")
+
+%section
+  .header{class: "#{can?(:create, User) ? '' : 'text-center'}"}
+    %h3.d-inline= t("user.users")
+    - if can?(:create, User)
+      .float-end.mt-1= link_to t("user.new"), new_user_path, class: "btn btn-primary btn-sm"
+  .body
+    %table{class: "table table-bordered table-sm mt-3"}
+      %thead
+        %tr
+          %th= t("user.email")
+          %th= t("user.name")
+          %th.text-center= t("user.admin")
+          %th.text-center= t("otp.otp")
+      %tbody
+        - @users.each do |user|
+          %tr
+            %td= link_to user.email, user
+            %td= user.name
+            %td.text-center= admin(user)
+            %td.text-center
+              = otp_required(user)
+              = otp_active(user)

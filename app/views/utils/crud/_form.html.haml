@@ -1,0 +1,14 @@
+- defined?(save) || save = t("save")
+
+.row
+  %div{class: center}
+    = form_with model: object, html: { class: "crud" } do |form|
+      %section
+        .header.text-center
+          %h4.d-inline= title
+        .body
+          - inputs.each do | param, label, type, options |
+            .mb-3
+              = render "utils/crud/#{type}", { form: form, param: param, label: label }.merge(options || {})
+        .footer
+          = render "utils/crud/buttons", form: form, object: object, index: index, save: save

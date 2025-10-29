@@ -1,0 +1,18 @@
+en:
+  any: Any
+  cancel: Cancel
+  edit: Edit
+  delete: Delete
+  save: Save
+  search: Search
+  sure: Are you sure?
+  title: TRIP
+  pagination:
+    frst: first
+    last: last
+    next: next
+    prev: previous
+    of: of
+  symbol:
+    cross: ✘
+    tick: ✔︎

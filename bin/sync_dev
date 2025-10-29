@@ -1,0 +1,2 @@
+#!/bin/sh
+sd -d tmp -s mor $1

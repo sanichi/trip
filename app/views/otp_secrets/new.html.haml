@@ -1,0 +1,17 @@
+- set_meta_tags title: t("otp.#{@qr_code ? 'new' : 'challenge'}")
+
+.row
+  %div{class: center(xx: 3, xl: 4, lg: 5, md: 6, sm: 7, xs: 8)}
+    = form_with url: otp_secret_path, local: true, html: { class: "crud" } do |f|
+      %section
+        .body
+          - if @qr_code
+            %p.small
+              Scan the QR image or enter the setup code into your
+              authenticator app then enter the 6-digit code it
+              generates into the OTP input below and click Submit.
+            .mb-3.text-center= image_tag @qr_code
+            %p.small.fw-bold.text-center#su_code= @su_code
+          .mb-3= render "utils/crud/text", form: f, label: t("otp.otp"), param: :otp_attempt
+        .footer
+          .text-center= f.submit t("otp.submit"), class: "btn btn-primary"
