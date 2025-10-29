@@ -1,2 +1,2 @@
 #!/bin/sh
-sd -d tmp -s mor $1
+sd -d trip -s mor $1
