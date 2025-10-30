@@ -66,13 +66,11 @@ This Rails 8 application is being transformed from a simple notes template into 
 
 ### Minor Issues
 
-5. **Inconsistent Timestamp Precision**: Schema uses `precision: 6` for timestamps, but Rails 8 defaults to `precision: nil` (microseconds). Should be consistent.
+5. ~~**Inconsistent Timestamp Precision**: FALSE ALARM - The schema doesn't explicitly set precision, it uses Rails/PostgreSQL defaults (microseconds), which is correct for Rails 8.~~
 
-6. **Missing User Admin Scope**: Users have an `admin` flag but no convenient scope like `User.admins` for querying admin users.
+6. ~~**Note Authorization Gap**: FIXED - Users can now `:create` notes and `:update`/`:destroy` their own notes (where `user_id` matches). Tests updated and passing.~~
 
-7. ~~**Note Authorization Gap**: FIXED - Users can now `:create` notes and `:update`/`:destroy` their own notes (where `user_id` matches). Tests updated and passing.~~
-
-8. **Guest Model Missing `id` Method**: The `Guest` class should probably have an `id` method returning `nil` for consistency with User objects, especially when used in forms or comparisons.
+7. ~~**Guest Model Missing `id` Method**: FALSE ALARM - The `Guest` model is a null object pattern and should NOT mirror all User attributes. It only needs methods the app actually calls for permission checking (like `guest?`, `admin?`, `name`). Adding fake attributes like `id` or `email` would mask bugs in calling code.~~
 
 ### Code Style Observations
 
