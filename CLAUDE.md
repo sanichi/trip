@@ -70,7 +70,7 @@ This Rails 8 application is being transformed from a simple notes template into 
 
 6. **Missing User Admin Scope**: Users have an `admin` flag but no convenient scope like `User.admins` for querying admin users.
 
-7. **Note Authorization Gap**: The `Ability` model allows all non-guest users to `:read` notes, but doesn't define who can `:create`, `:update`, or `:destroy` them. The NotesController uses `load_and_authorize_resource` which will fail for these actions.
+7. ~~**Note Authorization Gap**: FIXED - Users can now `:create` notes and `:update`/`:destroy` their own notes (where `user_id` matches). Tests updated and passing.~~
 
 8. **Guest Model Missing `id` Method**: The `Guest` class should probably have an `id` method returning `nil` for consistency with User objects, especially when used in forms or comparisons.
 
@@ -102,7 +102,7 @@ This Rails 8 application is being transformed from a simple notes template into 
 - [x] Fix schema format for Rails 8.1.1
 - [x] Fix `clean` method bug in Note model
 - [x] Remove or fix Picture model reference in Remarkable concern
-- [ ] Fix Note authorization rules in Ability model
+- [x] Fix Note authorization rules in Ability model
 
 ### Phase 2: Create Trip & Day Models
 - [ ] Generate Trip model (belongs_to :user)

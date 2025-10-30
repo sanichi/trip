@@ -73,6 +73,8 @@ describe Note, js: true do
   end
 
   context "users" do
+    let!(:user_note) { create(:note, user: user, draft: true) }
+
     before(:each) do
       login(user)
       click_link t("note.notes")
@@ -84,12 +86,35 @@ describe Note, js: true do
     end
 
     it "create" do
-      expect(page).to_not have_css "a", text: t("note.new")
-      visit new_note_path
-      expect_forbidden page
+      click_link t("note.new")
+      fill_in t("note.title"), with: data.title
+      fill_in t("note.markdown"), with: data.markdown
+      click_button t("save")
+
+      expect(page).to have_title data.title
+      expect(Note.count).to eq 3
+      n = Note.first
+      expect(n.title).to eq data.title
+      expect(n.markdown).to eq data.markdown
+      expect(n.draft).to eq true
+      expect(n.user).to eq user
     end
 
-    it "edit" do
+    it "edit own note" do
+      click_link user_note.title
+      click_link t("edit")
+
+      expect(page).to have_title t("note.edit")
+
+      fill_in t("note.title"), with: data.title
+      click_button t("save")
+
+      expect(page).to have_title data.title
+      n = Note.find(user_note.id)
+      expect(n.title).to eq data.title
+    end
+
+    it "can't edit other users' notes" do
       visit edit_note_path(note)
       expect_forbidden(page)
     end
