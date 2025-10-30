@@ -10,31 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_30_211559) do
-
+ActiveRecord::Schema[8.1].define(version: 2022_01_30_211559) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "notes", force: :cascade do |t|
-    t.string "title"
-    t.text "markdown"
+    t.datetime "created_at", null: false
     t.boolean "draft", default: true
+    t.text "markdown"
+    t.string "title"
+    t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_notes_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
-    t.string "password_digest"
     t.boolean "admin", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.integer "last_otp_at"
+    t.string "name"
     t.boolean "otp_required", default: false
     t.string "otp_secret", limit: 32
-    t.integer "last_otp_at"
+    t.string "password_digest"
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "notes", "users"

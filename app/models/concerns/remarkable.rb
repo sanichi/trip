@@ -71,23 +71,4 @@ module Remarkable
     markdown = Redcarpet::Markdown.new(renderer, options)
     markdown.render(text).html_safe
   end
-
-  def preprocess_images(text)
-    text.gsub!(/IMG\[([1-9]\d*)(?:\|([^\]]*))?\]/) do |m|
-      id = $1.to_i
-      op = $2
-      if p = Picture.find_by(id: $1.to_i)
-        url = Rails.application.routes.url_helpers.rails_blob_path(p.image, only_path: true)
-        options = {
-          title: p.title,
-          alt: p.title,
-        }
-        options[:width] = $1 if op =~ /w(?:idth)?[=:]([1-9]\d*)/
-        options[:height] = $1 if op =~ /(?<!t)h(?:eight)?[=:]([1-9]\d*)/
-        '<img src="%s" %s>' % [url, options.map{|k,v| '%s="%s"' % [k, v]}.join(" ")]
-      else
-        "IMG[%d?]" % id
-      end
-    end
-  end
 end

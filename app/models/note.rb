@@ -40,7 +40,7 @@ class Note < ApplicationRecord
   end
 
   def clean(text)
-    return nil if markdown.blank?
+    return nil if text.blank?
     text.strip.gsub(/\r\n/, "\n").gsub(/([^\S\n]*\n){2,}[^\S\n]*/, "\n\n")
   end
 end
