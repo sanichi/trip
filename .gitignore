@@ -23,6 +23,9 @@
 
 /spec/examples.txt
 
+# For Claude.
+/links
+
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
