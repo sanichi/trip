@@ -1,12 +1,9 @@
 - set_meta_tags title: @trip.title
 
 %section
-  .header
-    %h3.d-inline= @trip.title
-    %h5.text-muted
-      = @trip.start_date.strftime("%Y-%m-%d")
-      \-
-      = @trip.end_date.strftime("%Y-%m-%d")
+  .header.text-center
+    %h3= @trip.title
+    %h5.text-muted= trip_duration(@trip)
   .body
   .footer
     - if can?(:edit, @trip)
