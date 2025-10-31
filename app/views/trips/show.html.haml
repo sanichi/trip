@@ -1,0 +1,14 @@
+- set_meta_tags title: @trip.title
+
+%section
+  .header
+    %h3.d-inline= @trip.title
+    %h5.text-muted
+      = @trip.start_date.strftime("%Y-%m-%d")
+      \-
+      = @trip.end_date.strftime("%Y-%m-%d")
+  .body
+  .footer
+    - if can?(:edit, @trip)
+      = link_to t("edit"), edit_trip_path(@trip), class: "btn btn-primary btn-sm"
+    = link_to t("trip.trips"), trips_path, class: "btn btn-success btn-sm"

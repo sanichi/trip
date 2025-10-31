@@ -103,29 +103,37 @@ This Rails 8 application is being transformed from a simple notes template into 
 - [x] Fix Note authorization rules in Ability model
 
 ### Phase 2: Create Trip & Day Models
-- [ ] Generate Trip model (belongs_to :user)
+- [x] Generate Trip model (belongs_to :user)
+- [x] Add association to User (has_many :trips)
+- [x] Create migration with title, start_date, end_date
+- [x] Add validations (title, dates, date range, max 90 days)
+- [x] Add normalize_attributes callback
+- [x] Set up default scope (created_at desc)
+- [x] Fix namespace collision (renamed Trip module to Trips)
 - [ ] Generate Day model (belongs_to :trip)
-- [ ] Add associations to User
-- [ ] Create migrations
-- [ ] Add validations and concerns
-- [ ] Set up default scopes
+- [ ] Add associations for days
 
 ### Phase 3: Trip & Day Controllers/Views
-- [ ] Create TripsController with authorization
+- [x] Create TripsController with authorization
+- [x] Build Trip views (index, show, new, edit, form partial)
+- [x] Add routes for trips
+- [x] Update navigation with Trips link
+- [x] Create trip locale file (trip.yml)
 - [ ] Create DaysController with authorization
-- [ ] Build Trip views (index, show, new, edit)
 - [ ] Build Day views (index, show, new, edit)
-- [ ] Add routes
-- [ ] Update navigation
+- [ ] Add routes for days
+- [ ] Create day locale file
 
 ### Phase 4: Authorization & Testing
-- [ ] Update Ability model for trips and days
-- [ ] Create factories for trips and days
-- [ ] Write feature specs for trips
+- [x] Update Ability model for trips (guests read, users manage own, admins all)
+- [x] Create factory for trips
+- [x] Write feature specs for trips (11 tests, all passing)
+- [x] Test guest access (read-only) ✓
+- [x] Test user access (own content only) ✓
+- [x] Test admin access (everything) ✓
+- [ ] Update Ability model for days
+- [ ] Create factory for days
 - [ ] Write feature specs for days
-- [ ] Test guest access (read-only)
-- [ ] Test user access (own content only)
-- [ ] Test admin access (everything)
 
 ### Phase 5: Active Storage & Media
 - [ ] Install Active Storage

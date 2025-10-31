@@ -5,7 +5,9 @@ class User < ApplicationRecord
   OTP_ISSUER = "trip.sanichi.me"
 
   has_secure_password
+
   has_many :notes, dependent: :destroy, inverse_of: :user
+  has_many :trips, dependent: :destroy, inverse_of: :user
 
   before_validation :normalize_attributes
   after_update :reset_otp
