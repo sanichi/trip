@@ -1,4 +1,6 @@
 class Day < ApplicationRecord
+  include Remarkable
+
   MAX_TITLE = 50
 
   belongs_to :trip, inverse_of: :days
@@ -12,13 +14,12 @@ class Day < ApplicationRecord
 
   default_scope { order(date: :asc) }
 
+  def html = to_html(notes)
+  def day_label = "Day #{sequence}"
+
   def sequence
     return nil unless trip && date
     (date - trip.start_date).to_i + 1
-  end
-
-  def day_label
-    "Day #{sequence}"
   end
 
   private

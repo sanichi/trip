@@ -8,7 +8,7 @@
       = " #{t('symbol.draft')}" if @day.draft
   .body
     - if @day.notes.present?
-      .note= simple_format(@day.notes)
+      .note= @day.html
   .footer
     - if can?(:edit, @day)
       = link_to t("edit"), edit_trip_day_path(@trip, @day), class: "btn btn-primary btn-sm"
