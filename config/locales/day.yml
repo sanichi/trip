@@ -1,0 +1,10 @@
+en:
+  day:
+    date: Date
+    day: Day
+    days: Days
+    draft: Draft
+    edit: Edit Day
+    new: New Day
+    notes: Notes
+    title: Title

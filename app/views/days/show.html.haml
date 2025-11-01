@@ -1,0 +1,15 @@
+- set_meta_tags title: @day.title
+
+%section
+  .header.text-center
+    %h3= @day.title
+    %h5.text-muted
+      = @day.day_label
+      = " #{t('symbol.draft')}" if @day.draft
+  .body
+    - if @day.notes.present?
+      .note= simple_format(@day.notes)
+  .footer
+    - if can?(:edit, @day)
+      = link_to t("edit"), edit_trip_day_path(@trip, @day), class: "btn btn-primary btn-sm"
+    = link_to @trip.title, trip_path(@trip), class: "btn btn-success btn-sm"

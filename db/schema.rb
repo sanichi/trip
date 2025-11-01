@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_10_31_120304) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_01_113643) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "days", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.boolean "draft", default: true
+    t.text "notes"
+    t.string "title", limit: 50
+    t.bigint "trip_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["trip_id", "date"], name: "index_days_on_trip_id_and_date", unique: true
+    t.index ["trip_id"], name: "index_days_on_trip_id"
+  end
 
   create_table "notes", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -46,6 +58,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_10_31_120304) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "days", "trips"
   add_foreign_key "notes", "users"
   add_foreign_key "trips", "users"
 end

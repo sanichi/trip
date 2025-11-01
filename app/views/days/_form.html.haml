@@ -1,0 +1,8 @@
+:ruby
+  inputs = [
+    [:date,  t("day.date"),  :text],
+    [:title, t("day.title"), :text, maxlength: Day::MAX_TITLE],
+    [:notes, t("day.notes"), :area, rows: 20],
+    [:draft, t("day.draft"), :check]
+  ]
+= render "utils/crud/form", object: [@trip, day], index: trip_path(@trip), inputs: inputs, title: title

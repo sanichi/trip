@@ -16,4 +16,9 @@ module TripHelper
 
     year_in_title ? duration : "#{duration}, #{trip.start_date.year}"
   end
+
+  def trip_first_available_slot(trip)
+    used_dates = trip.days.pluck(:date).to_set
+    (trip.start_date..trip.end_date).find { |date| !used_dates.include?(date) }
+  end
 end

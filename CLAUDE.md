@@ -8,12 +8,12 @@ This Rails 8 application is being transformed from a simple notes template into 
 
 ### Data Model
 - **Users**: Authentication with bcrypt, OTP support, admin capabilities
-- **Trips**: Belong to users, represent a journey (e.g., "Japan 2025")
-- **Days**: Belong to trips, contain the daily blog entries with markdown text
+- **Trips**: Belong to users, represent a journey with start/end dates (max 90 days)
+- **Days**: Nested under trips, represent individual days with date, title, notes (text), and draft status. Days calculate their sequence dynamically based on date position within the trip.
 
 ### Authorization Model (CanCan)
 - **Guests** (not logged in): Can view trips and days (read-only)
-- **Users** (logged in): Can create trips and days, edit/delete their own content
+- **Users** (logged in): Can create trips and days, edit/delete their own content (days inherit trip ownership via association traversal)
 - **Admin**: Can do anything, including creating new users and managing all content
 
 ### Future Features
@@ -25,6 +25,8 @@ This Rails 8 application is being transformed from a simple notes template into 
 
 ### Models
 - `User`: Authentication, authorization, OTP support
+- `Trip`: Journey with title, start_date, end_date. Validates date ranges and prevents date changes that would orphan days
+- `Day`: Individual day entries with date, title (max 50 chars), notes (text), draft boolean. Nested resource under Trip. Validates date falls within trip range and unique per trip.
 - `Note`: Example model showing patterns to follow (will be removed later)
 - `Guest`: Null object pattern for unauthenticated users
 - `Ability`: CanCan authorization rules
@@ -43,9 +45,10 @@ This Rails 8 application is being transformed from a simple notes template into 
 - Bootstrap 5 styling
 - Turbo frames for dynamic content
 - Reusable partials in `app/views/utils/`:
-  - `crud/*`: Form helpers (text, area, select, check, password, buttons)
+  - `crud/*`: Form helpers (text, area, select, check, password, buttons) - **Enhanced to support nested resources by accepting arrays as model parameter**
   - `search/*`: Search form components
   - `pagination/*`: Pagination links
+- Days displayed inline on Trip show page (no separate days index)
 
 ### Testing (RSpec)
 - Feature specs with Capybara (JavaScript enabled)
@@ -94,6 +97,28 @@ This Rails 8 application is being transformed from a simple notes template into 
 
 13. **Image Upload UI**: Will need to design how users upload images and get the markdown syntax to embed them.
 
+## Recent Achievements
+
+### Nested Resources Implementation (Days under Trips)
+Successfully implemented Days as a nested resource with several technical highlights:
+
+1. **Enhanced CRUD Form Helper**: Modified `utils/crud/_form.html.haml` to support nested resources by:
+   - Detecting when `object` parameter is an array (e.g., `[@trip, @day]`)
+   - Extracting actual object for validation checks while preserving array for `form_with`
+   - Passing both `cancel_path` and `delete_path` explicitly to handle nested routes
+
+2. **Smart Date Management**:
+   - Days list automatically shown on trip show page (no separate index)
+   - "New Day" button appears only when slots available and user authorized
+   - New day form pre-populates with first available date slot
+   - Prevents creating days outside trip date range
+   - Prevents modifying trip dates if it would invalidate existing days
+
+3. **User Experience Features**:
+   - Draft indicator (📝 emoji) on trip page for work-in-progress days
+   - Dynamic day labels ("Day 1", "Day 2") calculated from date position
+   - Sparse day support (can have Day 1, 3, 5 without 2 and 4)
+
 ## Next Steps
 
 ### Phase 1: Fix Critical Issues
@@ -110,8 +135,11 @@ This Rails 8 application is being transformed from a simple notes template into 
 - [x] Add normalize_attributes callback
 - [x] Set up default scope (created_at desc)
 - [x] Fix namespace collision (renamed Trip module to Trips)
-- [ ] Generate Day model (belongs_to :trip)
-- [ ] Add associations for days
+- [x] Generate Day model (belongs_to :trip)
+- [x] Add associations for days (Trip has_many :days, dependent: :destroy)
+- [x] Add unique index on [trip_id, date]
+- [x] Implement dynamic sequence calculation (day number based on date offset from trip start)
+- [x] Add validation preventing trip date changes that would orphan existing days
 
 ### Phase 3: Trip & Day Controllers/Views
 - [x] Create TripsController with authorization
@@ -119,10 +147,14 @@ This Rails 8 application is being transformed from a simple notes template into 
 - [x] Add routes for trips
 - [x] Update navigation with Trips link
 - [x] Create trip locale file (trip.yml)
-- [ ] Create DaysController with authorization
-- [ ] Build Day views (index, show, new, edit)
-- [ ] Add routes for days
-- [ ] Create day locale file
+- [x] Create DaysController with authorization (nested under trips)
+- [x] Build Day views (show, new, edit, form partial - no index, days shown on trip page)
+- [x] Add nested routes for days (except index)
+- [x] Create day locale file (day.yml)
+- [x] Add draft emoji indicator (📝) to trip show page for draft days
+- [x] Implement "New Day" button with slot availability check
+- [x] Auto-populate first available date slot when creating new day
+- [x] Create trip_first_available_slot helper method
 
 ### Phase 4: Authorization & Testing
 - [x] Update Ability model for trips (guests read, users manage own, admins all)
@@ -131,9 +163,14 @@ This Rails 8 application is being transformed from a simple notes template into 
 - [x] Test guest access (read-only) ✓
 - [x] Test user access (own content only) ✓
 - [x] Test admin access (everything) ✓
-- [ ] Update Ability model for days
-- [ ] Create factory for days
-- [ ] Write feature specs for days
+- [x] Update Ability model for days (using trip association traversal: `trip: { user_id: user.id }`)
+- [x] Create factory for days
+- [x] Write feature specs for days (16 tests, all passing)
+- [x] Test CRUD operations for admins, users, and guests ✓
+- [x] Test date validations (day within trip range) ✓
+- [x] Test trip date change prevention when it would orphan days ✓
+- [x] Test slot availability and default date assignment ✓
+- [x] Test draft status handling ✓
 
 ### Phase 5: Active Storage & Media
 - [ ] Install Active Storage

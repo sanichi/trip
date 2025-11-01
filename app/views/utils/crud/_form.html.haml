@@ -1,4 +1,7 @@
 - defined?(save) || save = t("save")
+- actual_object = object.is_a?(Array) ? object.last : object
+- cancel_path = actual_object.new_record? ? index : (object.is_a?(Array) ? object : actual_object)
+- delete_path = object.is_a?(Array) ? object : actual_object
 
 .row
   %div{class: center}
@@ -11,4 +14,4 @@
             .mb-3
               = render "utils/crud/#{type}", { form: form, param: param, label: label }.merge(options || {})
         .footer
-          = render "utils/crud/buttons", form: form, object: object, index: index, save: save
+          = render "utils/crud/buttons", form: form, object: actual_object, cancel_path: cancel_path, delete_path: delete_path, save: save

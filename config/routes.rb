@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   get "sign_in" => "sessions#new"
 
   resources :notes
-  resources :trips
+  resources :trips do
+    resources :days, except: [:index]
+  end
   resources :users
 
   resource :session, only: [:new, :create, :destroy]

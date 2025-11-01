@@ -3,6 +3,7 @@ class Trip < ApplicationRecord
   MAX_DAYS = 90
 
   belongs_to :user, inverse_of: :trips
+  has_many :days, inverse_of: :trip, dependent: :destroy
 
   before_validation :normalize_attributes
 
@@ -11,6 +12,7 @@ class Trip < ApplicationRecord
   validates :end_date, presence: true
   validate :end_date_not_before_start_date
   validate :trip_duration_not_too_long
+  validate :date_changes_dont_invalidate_days
 
   default_scope { order(created_at: :desc) }
 
@@ -32,6 +34,17 @@ class Trip < ApplicationRecord
     duration = (end_date - start_date).to_i
     if duration > MAX_DAYS
       errors.add(:end_date, "trip cannot be longer than #{MAX_DAYS} days")
+    end
+  end
+
+  def date_changes_dont_invalidate_days
+    return if start_date.blank? || end_date.blank?
+    return unless start_date_changed? || end_date_changed?
+
+    days.each do |day|
+      unless day.date.between?(start_date, end_date)
+        errors.add(:base, "cannot change dates: Day #{day.sequence} (#{day.date}) would be outside trip range")
+      end
     end
   end
 end
