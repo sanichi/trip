@@ -8,6 +8,8 @@ class Ability
 
     unless user.guest?
       can :help, :page
+      can [:read, :create], Image
+      can [:update, :destroy], Image, user_id: user.id
       can [:read, :create], Note
       can [:update, :destroy], Note, user_id: user.id
       can [:read, :create], Trip

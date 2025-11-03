@@ -64,4 +64,10 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # Store uploaded files on the local file system.
+  config.active_storage.service = :local
+
+  # Use libvips for image processing.
+  config.active_storage.variant_processor = :vips
 end

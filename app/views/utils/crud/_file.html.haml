@@ -1,0 +1,5 @@
+- defined?(accept) || accept = nil
+- defined?(direct_upload) || direct_upload = false
+
+= form.label param, label, class: "form-label"
+= form.file_field param, accept: accept, direct_upload: direct_upload, class: "form-control"

@@ -16,6 +16,8 @@ gem "importmap-rails", "~> 2.1"
 gem "turbo-rails", "~> 2.0"
 gem "stimulus-rails", "~> 1.3"
 gem 'sni', git: 'https://github.com/sanichi/sni'
+gem 'image_processing', '~> 1.12'
+gem 'ruby-vips', '~> 2.2'
 
 group :development, :test do
   gem 'rspec-rails', '< 9'

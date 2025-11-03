@@ -1,0 +1,58 @@
+- set_meta_tags title: @image.caption
+
+%section
+  .header
+    %h3.d-inline= @image.caption
+  .body
+    .text-center.mb-4
+      - if @image.file.attached?
+        = image_tag url_for(@image.file), class: "img-fluid", alt: @image.caption
+    .row
+      .col-md-6
+        %table.table.table-sm
+          %tbody
+            %tr
+              %th= t("image.user")
+              %td= @image.user.name
+            %tr
+              %th= t("image.width")
+              %td= "#{@image.width} px"
+            %tr
+              %th= t("image.height")
+              %td= "#{@image.height} px"
+      .col-md-6
+        %table.table.table-sm
+          %tbody
+            %tr
+              %th= t("image.size")
+              %td= "#{@image.size_mb} MB"
+            %tr
+              %th= t("image.type")
+              %td= @image.content_type
+            %tr
+              %th= t("image.created")
+              %td= @image.created_at.strftime("%Y-%m-%d %H:%M")
+    - if @image.latitude && @image.longitude
+      .row.mt-3
+        .col-12
+          %h5= t("image.gps")
+          %table.table.table-sm
+            %tbody
+              %tr
+                %th= t("image.latitude")
+                %td= @image.latitude
+              %tr
+                %th= t("image.longitude")
+                %td= @image.longitude
+    - if @image.date_taken
+      .row.mt-3
+        .col-12
+          %table.table.table-sm
+            %tbody
+              %tr
+                %th= t("image.date_taken")
+                %td= @image.date_taken.strftime("%Y-%m-%d %H:%M:%S")
+  .footer
+    - if can?(:edit, @image)
+      = link_to t("edit"), edit_image_path(@image), class: "btn btn-primary btn-sm"
+    = link_to t("images"), images_path, class: "btn btn-success btn-sm"

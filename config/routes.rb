@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   %w{env help home}.each { |p| get p => "pages##{p}" }
   get "sign_in" => "sessions#new"
 
+  resources :images
   resources :notes
   resources :trips do
     resources :days, except: [:index]

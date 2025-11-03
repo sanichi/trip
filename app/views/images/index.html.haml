@@ -1,0 +1,49 @@
+:ruby
+  set_meta_tags title: t("images")
+  inputs = [
+    [:query,  t("image.caption"), :text, "offset-md-1 md-3", size: 16, placeholder: t("image.search"), autofocus: true],
+    [:user,   t("image.user"),    :text, "md-2",             size: 12, placeholder: t("image.user")],
+    [:width,  t("image.width"),   :text, "md-2",             size: 10, placeholder: "px"],
+    [:height, t("image.height"),  :text, "md-2",             size: 10, placeholder: "px"],
+    [:size,   t("image.size"),    :text, "md-2",             size: 10, placeholder: "MB"],
+  ]
+
+%section
+  .header{class: "#{can?(:create, Image) ? '' : 'text-center'}"}
+    %h3.d-inline= t("images")
+    - if can?(:create, Image)
+      .float-end.mt-1= link_to t("new"), new_image_path, class: "btn btn-primary btn-sm"
+  .body
+    = render "utils/search/form", index: images_path, inputs: inputs
+    = turbo_frame_tag :results, "data-turbo-action" => "advance" do
+      %table.mt-4{class: "table table-bordered table-sm"}
+        %thead
+          %tr
+            %th{rowspan: 2, class: "text-center align-middle"}= t("image.file")
+            %th{colspan: 4, class: "text-center"}= t("image.caption")
+          %tr
+            %th.text-center= t("image.size")
+            %th.text-center= t("image.type")
+            %th.text-center{title: t("image.gps")}= t("image.gps")
+            %th.text-center{title: t("image.date_taken")}= t("image.date_taken")
+        %tbody
+          - @images.matches.each do |image|
+            - caption_display = image.caption.length > 25 ? image.caption[0..24] + "..." : image.caption
+            %tr
+              %td.text-center{rowspan: 2, style: "vertical-align: middle;"}
+                = link_to image_path(image), "data-turbo-frame" => "_top" do
+                  - if image.file.attached?
+                    = image_tag url_for(image.thumbnail), alt: caption_display, style: "max-height: 100px;"
+              %td{colspan: 4}
+                = link_to caption_display, image, "data-turbo-frame" => "_top", title: image.caption
+                %small.text-muted
+                  by #{image.user.name}
+            %tr
+              %td.text-center
+                = image.size_mb ? "#{image.size_mb} MB" : "N/A"
+                %br
+                %small.text-muted= image.width && image.height ? "#{image.width}×#{image.height}" : "N/A"
+              %td.text-center= image.content_type ? image.content_type.sub("image/", "") : "N/A"
+              %td.text-center= image.latitude && image.longitude ? t("symbol.tick") : t("symbol.cross")
+              %td.text-center= image.date_taken ? t("symbol.tick") : t("symbol.cross")
+          = render "utils/pagination/links", pager: @images, columns: 5
