@@ -1,6 +1,6 @@
 :ruby
   inputs = [
-    [:file,    t("image.file"),    :file, accept: "image/jpeg,image/png,image/heic,image/heif,image/webp"],
+    [:file,    t("image.file"),    :file, accept: "image/jpeg,image/png,image/webp"],
     [:caption, t("image.caption"), :text, maxlength: Image::MAX_CAPTION],
   ]
 = render "utils/crud/form", object: image, index: images_path, inputs: inputs, title: title
