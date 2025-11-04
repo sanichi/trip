@@ -114,8 +114,13 @@ class Image < ApplicationRecord
       # Extract EXIF data before processing
       extract_exif_data(tempfile.path)
 
-      # Load image with Vips
-      image = Vips::Image.new_from_file(tempfile.path, access: :sequential)
+      # Load image with Vips - try with fail_on option to ignore metadata errors
+      begin
+        image = Vips::Image.new_from_file(tempfile.path, access: :sequential, fail_on: :none)
+      rescue Vips::Error => e
+        Rails.logger.warn("Failed to load image with sequential access: #{e.message}, retrying without it")
+        image = Vips::Image.new_from_file(tempfile.path, fail_on: :none)
+      end
       original_format = detect_format(file.content_type)
 
       # Determine if we need to convert format
@@ -161,7 +166,7 @@ class Image < ApplicationRecord
       end
 
       # Get final dimensions
-      final_image = Vips::Image.new_from_file(output_path.to_s)
+      final_image = Vips::Image.new_from_file(output_path.to_s, fail_on: :none)
       final_width = final_image.width
       final_height = final_image.height
 
@@ -213,7 +218,7 @@ class Image < ApplicationRecord
   end
 
   def extract_exif_data(file_path)
-    image = Vips::Image.new_from_file(file_path)
+    image = Vips::Image.new_from_file(file_path, fail_on: :none)
 
     # Extract GPS data - check both ifd0 and ifd3 (HEIC files use ifd3)
     begin

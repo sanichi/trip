@@ -1,0 +1,47 @@
+Started GET "/images/new" for 209.35.94.139 at 2025-11-04 12:44:15 +0000
+Processing by ImagesController#new as HTML
+  Rendered layout layouts/application.html.haml (Duration: 18.2ms | GC: 2.1ms)
+Completed 200 OK in 25ms (Views: 18.6ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 2.4ms)
+Started POST "/images" for 209.35.94.139 at 2025-11-04 12:44:43 +0000
+Processing by ImagesController#create as TURBO_STREAM
+  Parameters: {"authenticity_token" => "[FILTERED]", "image" => {"file" => #<ActionDispatch::Http::UploadedFile:0x00007f4e07597638 @tempfile=#<Tempfile:/tmp/RackMultipart20251104-111660-cj9gxu.heic>, @content_type="image/heic", @original_filename="IMG_1333.heic", @headers="Content-Disposition: form-data; name=\"image[file]\"; filename=\"IMG_1333.heic\"\r\nContent-Type: image/heic\r\n">, "caption" => "Test image in Scotland."}, "commit" => "Save"}
+[36m  Disk Storage (4.2ms) [0m[32mUploaded file to key: xq3r91uswpwyecsnqk3aayw4yiuc (checksum: ItYyRzq1mxGMIv5qzvSIvg==)[0m
+[36m  Disk Storage (1.5ms) [0m[34mDownloaded file from key: xq3r91uswpwyecsnqk3aayw4yiuc[0m
+Could not extract EXIF data: /tmp/original20251104-111660-ukcepb.heic: bad seek to 1357909
+heif: Invalid input: Unspecified: Metadata not correctly assigned to image (2.0)
+
+Image processing error for Image ID 1: /tmp/original20251104-111660-ukcepb.heic: bad seek to 1357909
+heif: Invalid input: Unspecified: Metadata not correctly assigned to image (2.0)
+
+Error class: Vips::Error
+/var/www/me.trip/shared/bundle/ruby/3.4.0/gems/ruby-vips-2.2.5/lib/vips/operation.rb:228:in 'Vips::Operation#build'
+/var/www/me.trip/shared/bundle/ruby/3.4.0/gems/ruby-vips-2.2.5/lib/vips/operation.rb:481:in 'Vips::Operation.call'
+/var/www/me.trip/shared/bundle/ruby/3.4.0/gems/ruby-vips-2.2.5/lib/vips/image.rb:283:in 'Vips::Image.new_from_file'
+/var/www/me.trip/releases/20251104124314/app/models/image.rb:118:in 'Image#process_image'
+/var/www/me.trip/shared/bundle/ruby/3.4.0/gems/activesupport-8.1.1/lib/active_support/callbacks.rb:362:in 'block in ActiveSupport::Callbacks::CallTemplate::MethodCall#make_lambda'
+/var/www/me.trip/shared/bundle/ruby/3.4.0/gems/activesupport-8.1.1/lib/active_support/callbacks.rb:208:in 'ActiveSupport::Callbacks::Filters::After#call'
+/var/www/me.trip/shared/bundle/ruby/3.4.0/gems/activesupport-8.1.1/lib/active_support/callbacks.rb:564:in 'block in ActiveSupport::Callbacks::CallbackSequence#invoke_after'
+/var/www/me.trip/shared/bundle/ruby/3.4.0/gems/activesupport-8.1.1/lib/active_support/callbacks.rb:564:in 'Array#each'
+/var/www/me.trip/shared/bundle/ruby/3.4.0/gems/activesupport-8.1.1/lib/active_support/callbacks.rb:564:in 'ActiveSupport::Callbacks::CallbackSequence#invoke_after'
+/var/www/me.trip/shared/bundle/ruby/3.4.0/gems/activesupport-8.1.1/lib/active_support/callbacks.rb:111:in 'ActiveSupport::Callbacks#run_callbacks'
+[ActiveJob] Enqueued ActiveStorage::AnalyzeJob (Job ID: 4ba1ddee-762c-4401-86ac-69dafa1ab206) to Async(default) with arguments: #<GlobalID:0x00007f4e07803138 @uri=#<URI::GID gid://trips/ActiveStorage::Blob/1>>
+Redirected to https://trip.sanichi.me/images/1
+Completed 302 Found in 93ms (ActiveRecord: 6.1ms (7 queries, 0 cached) | GC: 0.1ms)
+[ActiveJob] [ActiveStorage::AnalyzeJob] [4ba1ddee-762c-4401-86ac-69dafa1ab206] Performing ActiveStorage::AnalyzeJob (Job ID: 4ba1ddee-762c-4401-86ac-69dafa1ab206) from Async(default) enqueued at 2025-11-04T12:44:43.710509029Z with arguments: #<GlobalID:0x00007f4e0796a328 @uri=#<URI::GID gid://trips/ActiveStorage::Blob/1>>
+[ActiveJob] [ActiveStorage::AnalyzeJob] [4ba1ddee-762c-4401-86ac-69dafa1ab206] [36m  Disk Storage (12.5ms) [0m[34mDownloaded file from key: xq3r91uswpwyecsnqk3aayw4yiuc[0m
+Started GET "/images/1" for 209.35.94.139 at 2025-11-04 12:44:43 +0000
+Processing by ImagesController#show as TURBO_STREAM
+  Parameters: {"id" => "1"}
+  Rendered layout layouts/application.html.haml (Duration: 34.8ms | GC: 7.7ms)
+Completed 200 OK in 42ms (Views: 30.7ms | ActiveRecord: 9.0ms (5 queries, 0 cached) | GC: 7.7ms)
+[ActiveJob] [ActiveStorage::AnalyzeJob] [4ba1ddee-762c-4401-86ac-69dafa1ab206] Skipping image analysis because Vips doesn't support the file
+[ActiveJob] [ActiveStorage::AnalyzeJob] [4ba1ddee-762c-4401-86ac-69dafa1ab206] Performed ActiveStorage::AnalyzeJob (Job ID: 4ba1ddee-762c-4401-86ac-69dafa1ab206) from Async(default) in 86.28ms
+Started GET "/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MSwicHVyIjoiYmxvYl9pZCJ9fQ==--3b31f72ab0a42d389c1055757443ac7753b9dc29/IMG_1333.heic" for 209.35.94.139 at 2025-11-04 12:44:43 +0000
+Processing by ActiveStorage::Blobs::RedirectController#show as */*
+  Parameters: {"signed_id" => "eyJfcmFpbHMiOnsiZGF0YSI6MSwicHVyIjoiYmxvYl9pZCJ9fQ==--3b31f72ab0a42d389c1055757443ac7753b9dc29", "filename" => "IMG_1333"}
+Redirected to https://trip.sanichi.me/rails/active_storage/disk/eyJfcmFpbHMiOnsiZGF0YSI6eyJrZXkiOiJ4cTNyOTF1c3dwd3llY3NucWszYWF5dzR5aXVjIiwiZGlzcG9zaXRpb24iOiJhdHRhY2htZW50OyBmaWxlbmFtZT1cIklNR18xMzMzLmhlaWNcIjsgZmlsZW5hbWUqPVVURi04JydJTUdfMTMzMy5oZWljIiwiY29udGVudF90eXBlIjoiaW1hZ2UvaGVpYyIsInNlcnZpY2VfbmFtZSI6ImxvY2FsIn0sImV4cCI6IjIwMjUtMTEtMDRUMTI6NDk6NDMuODM2WiIsInB1ciI6ImJsb2Jfa2V5In19--2f281d5d170846817e01d8b153b8f800214c9e37/IMG_1333.heic
+Completed 302 Found in 2ms (ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+Started GET "/rails/active_storage/disk/eyJfcmFpbHMiOnsiZGF0YSI6eyJrZXkiOiJ4cTNyOTF1c3dwd3llY3NucWszYWF5dzR5aXVjIiwiZGlzcG9zaXRpb24iOiJhdHRhY2htZW50OyBmaWxlbmFtZT1cIklNR18xMzMzLmhlaWNcIjsgZmlsZW5hbWUqPVVURi04JydJTUdfMTMzMy5oZWljIiwiY29udGVudF90eXBlIjoiaW1hZ2UvaGVpYyIsInNlcnZpY2VfbmFtZSI6ImxvY2FsIn0sImV4cCI6IjIwMjUtMTEtMDRUMTI6NDk6NDMuODM2WiIsInB1ciI6ImJsb2Jfa2V5In19--2f281d5d170846817e01d8b153b8f800214c9e37/IMG_1333.heic" for 209.35.94.139 at 2025-11-04 12:44:43 +0000
+Processing by ActiveStorage::DiskController#show as */*
+  Parameters: {"encoded_key" => "[FILTERED]", "filename" => "IMG_1333"}
+Completed 200 OK in 0ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
