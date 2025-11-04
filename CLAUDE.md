@@ -10,6 +10,7 @@ This Rails 8 application is being transformed from a simple notes template into 
 - **Users**: Authentication with bcrypt, OTP support, admin capabilities
 - **Trips**: Belong to users, represent a journey with start/end dates (max 90 days)
 - **Days**: Nested under trips, represent individual days with date, title, notes (text), and draft status. Days calculate their sequence dynamically based on date position within the trip.
+- **Images**: Belong to users, use Active Storage for file management. Automatic processing: resize (max 1000px), compress (under 3MB), extract EXIF (GPS/date). Supports JPEG, PNG, WebP.
 
 ### Authorization Model (CanCan)
 - **Guests** (not logged in): Can view trips and days (read-only)
@@ -17,9 +18,9 @@ This Rails 8 application is being transformed from a simple notes template into 
 - **Admin**: Can do anything, including creating new users and managing all content
 
 ### Future Features
-- **Image/Video Upload**: Active Storage for local file storage
-- **Media Embedding**: Ability to insert uploaded images/videos into blog text
-- **Rich Markdown**: Building on existing Redcarpet implementation
+- **Image Embedding**: Ability to insert uploaded images into day notes via markdown
+- **Video Upload**: Active Storage support for video files
+- **Rich Markdown**: Enhanced markdown features building on existing Redcarpet implementation
 
 ## Current Template Structure
 
@@ -27,6 +28,7 @@ This Rails 8 application is being transformed from a simple notes template into 
 - `User`: Authentication, authorization, OTP support
 - `Trip`: Journey with title, start_date, end_date. Validates date ranges and prevents date changes that would orphan days
 - `Day`: Individual day entries with date, title (max 50 chars), notes (text), draft boolean. Nested resource under Trip. Validates date falls within trip range and unique per trip.
+- `Image`: Photo uploads with Active Storage. Automatic processing (resize, compress), EXIF extraction (GPS, date taken). Belongs to user. Supports JPEG, PNG, WebP only.
 - `Note`: Example model showing patterns to follow (will be removed later)
 - `Guest`: Null object pattern for unauthenticated users
 - `Ability`: CanCan authorization rules
@@ -98,6 +100,38 @@ This Rails 8 application is being transformed from a simple notes template into 
 13. **Image Upload UI**: Will need to design how users upload images and get the markdown syntax to embed them.
 
 ## Recent Achievements
+
+### Image Upload with Active Storage (Completed)
+Successfully implemented image upload functionality with intelligent processing:
+
+1. **Image Processing Pipeline**:
+   - Automatic resize to max 1000px (longest dimension)
+   - Smart compression to stay under 3MB
+   - Fallback strategy: reduce to 500px at 70% quality if needed
+   - Format preservation (no conversion - JPEG stays JPEG, etc.)
+   - HEIC support via Apple's automatic conversion (macOS/iOS only)
+
+2. **EXIF Data Extraction**:
+   - GPS coordinates from both ifd0 (standard) and ifd3 (iPhone JPEGs)
+   - Date taken extraction from multiple EXIF fields
+   - Tested and verified with real iPhone photos
+
+3. **Format Support**:
+   - Accepts: JPEG, PNG, WebP
+   - Rejects: HEIC/HEIF (with clear error messages), GIF
+   - Client-side filtering via `accept` attribute
+   - Server-side validation for security
+
+4. **Code Simplification**:
+   - Removed HEIC conversion logic (originally planned but unnecessary)
+   - Reduced Image model from 354 to 323 lines
+   - Removed format detection/conversion methods
+   - Simplified processing to resize + compress only
+
+5. **Production Verified**:
+   - Tested on Alma Linux 9.6 production server
+   - Works without HEIC decoder libraries
+   - Apple devices auto-convert HEIC→JPEG preserving GPS/date
 
 ### Nested Resources Implementation (Days under Trips)
 Successfully implemented Days as a nested resource with several technical highlights:
@@ -173,12 +207,23 @@ Successfully implemented Days as a nested resource with several technical highli
 - [x] Test draft status handling ✓
 
 ### Phase 5: Active Storage & Media
-- [ ] Install Active Storage
-- [ ] Configure local storage
-- [ ] Add image upload to days
-- [ ] Update Remarkable concern for Active Storage
-- [ ] Add image embedding to markdown
-- [ ] Test image upload and display
+- [x] Install Active Storage (migrations created)
+- [x] Configure local storage (disk service)
+- [x] Create Image model (belongs_to :user, has_one_attached :file)
+- [x] Add image upload functionality with processing:
+  - Automatic resize (max 1000px dimension, fallback to 500px if needed)
+  - Compression (target under 3MB, fallback quality 70% if needed)
+  - EXIF extraction (GPS coordinates from ifd0/ifd3, date taken)
+  - Format preservation (JPEG stays JPEG, PNG stays PNG, WebP stays WebP)
+- [x] Configure accepted formats (JPEG, PNG, WebP only - no HEIC/HEIF/GIF)
+- [x] Add server-side validation (file type, size limits)
+- [x] Add client-side file picker filtering (accept attribute)
+- [x] Create ImagesController with authorization
+- [x] Build Image views (index, show, new, edit, form partial)
+- [x] Create image factory and feature specs
+- [x] Verified Apple auto-converts HEIC→JPEG preserving GPS/date
+- [ ] Add image embedding to day notes (Remarkable concern updates)
+- [ ] Link images to specific days/trips
 
 ### Phase 6: Polish
 - [ ] Remove Note model and related code
@@ -199,4 +244,7 @@ Successfully implemented Days as a nested resource with several technical highli
 - CanCanCan (Authorization)
 - BCrypt (Authentication)
 - ROTP/RQRCode (OTP)
+- Active Storage (File uploads)
+- ruby-vips (Image processing)
+- image_processing gem (Vips wrapper)
 - RSpec + Capybara (Testing)
