@@ -86,13 +86,15 @@ class Image < ApplicationRecord
   end
 
   def file_type_allowed
-    allowed_types = %w[image/jpeg image/jpg image/png image/heic image/heif image/webp]
+    allowed_types = %w[image/jpeg image/jpg image/png image/webp]
 
     unless allowed_types.include?(file.content_type)
       if file.content_type == "image/gif"
         errors.add(:file, "GIF files are not supported")
+      elsif file.content_type == "image/heic" || file.content_type == "image/heif"
+        errors.add(:file, "HEIC/HEIF files are not supported")
       else
-        errors.add(:file, "must be a JPEG, PNG, HEIC, or WebP image")
+        errors.add(:file, "must be a JPEG, PNG, or WebP image")
       end
     end
   end
@@ -121,42 +123,27 @@ class Image < ApplicationRecord
         Rails.logger.warn("Failed to load image with sequential access: #{e.message}, retrying without it")
         image = Vips::Image.new_from_file(tempfile.path, fail_on: :none)
       end
-      original_format = detect_format(file.content_type)
 
-      # Determine if we need to convert format
-      should_convert = should_convert_format?(original_format)
-
-      # Process: resize if needed
+      # Resize if needed
       processed_image = resize_if_needed(image, MAX_DIMENSION)
 
-      # Prepare output settings
-      if should_convert
-        output_ext = "jpg"
-        new_content_type = "image/jpeg"
-        new_filename = file.filename.to_s.gsub(/\.[^.]+$/, ".jpg")
-      else
-        output_ext = file_extension(file.content_type)
-        new_content_type = file.content_type
-        new_filename = file.filename.to_s
-      end
+      # Keep original format
+      output_ext = file_extension(file.content_type)
+      new_content_type = file.content_type
+      new_filename = file.filename.to_s
 
       # Save processed image to temporary file
       output_path = Rails.root.join("tmp", "processed_#{SecureRandom.hex}.#{output_ext}")
-      save_image(processed_image, output_path.to_s, should_convert ? 85 : nil)
+      save_image(processed_image, output_path.to_s, output_ext)
 
       # Check file size
       output_size = File.size(output_path)
 
       if output_size > MAX_PROCESSED_SIZE
-        # Try more aggressive compression
+        # Try more aggressive compression with smaller dimensions
         File.delete(output_path)
         processed_image = resize_if_needed(image, FALLBACK_DIMENSION)
-
-        output_ext = "jpg"
-        new_content_type = "image/jpeg"
-        new_filename = file.filename.to_s.gsub(/\.[^.]+$/, ".jpg")
-
-        save_image(processed_image, output_path.to_s, FALLBACK_QUALITY)
+        save_image(processed_image, output_path.to_s, output_ext, FALLBACK_QUALITY)
         output_size = File.size(output_path)
 
         if output_size > MAX_PROCESSED_SIZE
@@ -220,7 +207,7 @@ class Image < ApplicationRecord
   def extract_exif_data(file_path)
     image = Vips::Image.new_from_file(file_path, fail_on: :none)
 
-    # Extract GPS data - check both ifd0 and ifd3 (HEIC files use ifd3)
+    # Extract GPS data - check both ifd0 (standard) and ifd3 (some JPEG files from iPhones)
     begin
       %w[exif-ifd0 exif-ifd3].each do |ifd|
         lat_field = "#{ifd}-GPSLatitude"
@@ -291,28 +278,10 @@ class Image < ApplicationRecord
     nil
   end
 
-  def detect_format(content_type)
-    case content_type
-    when "image/jpeg", "image/jpg" then "jpeg"
-    when "image/png" then "png"
-    when "image/gif" then "gif"
-    when "image/webp" then "webp"
-    when "image/heic", "image/heif" then "heic"
-    else "other"
-    end
-  end
-
-  def should_convert_format?(format)
-    # Convert HEIC and other non-web formats to JPEG
-    # Keep JPG, PNG, GIF, WEBP as-is
-    !["jpeg", "png", "gif", "webp"].include?(format)
-  end
-
   def file_extension(content_type)
     case content_type
     when "image/jpeg", "image/jpg" then "jpg"
     when "image/png" then "png"
-    when "image/gif" then "gif"
     when "image/webp" then "webp"
     else "jpg"
     end
@@ -330,24 +299,24 @@ class Image < ApplicationRecord
     end
   end
 
-  def save_image(image, path, quality = nil)
+  def save_image(image, path, extension, quality = nil)
     # Ensure image is in sRGB color space
     image = image.colourspace("srgb") if image.bands >= 3
 
-    ext = File.extname(path).downcase
-    case ext
-    when ".jpg", ".jpeg"
+    case extension
+    when "jpg"
       quality ||= 85
       image.jpegsave(path, Q: quality, strip: true, optimize_coding: true)
-    when ".png"
+    when "png"
+      # PNG doesn't use quality, use compression level instead
       image.pngsave(path, compression: 9, strip: true)
-    when ".webp"
-      image.webpsave(path, Q: quality || 85, strip: true)
-    when ".gif"
-      image.gifsave(path, strip: true)
+    when "webp"
+      quality ||= 85
+      image.webpsave(path, Q: quality, strip: true)
     else
       # Default to JPEG
-      image.jpegsave(path, Q: quality || 85, strip: true, optimize_coding: true)
+      quality ||= 85
+      image.jpegsave(path, Q: quality, strip: true, optimize_coding: true)
     end
   end
 end

@@ -32,8 +32,8 @@ FactoryBot.define do
       ].pack("C*"))
       file.rewind
       image.file.attach(io: file, filename: "test_image.jpg", content_type: "image/jpeg")
-      file.close
-      file.unlink
+      # Don't close the file yet - ActiveStorage needs it during the upload process
+      # The file will be automatically cleaned up by Tempfile when it's garbage collected
     end
   end
 end
