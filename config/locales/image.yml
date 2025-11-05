@@ -2,7 +2,7 @@ en:
   image:
     caption: Caption
     created: Uploaded
-    date_taken: Taken
+    taken: Taken
     dimensions: Dimensions
     file: Image File
     gps: GPS

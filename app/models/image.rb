@@ -177,8 +177,8 @@ class Image < ApplicationRecord
       update_columns(
         latitude: latitude,
         longitude: longitude,
-        date_taken: date_taken
-      ) if latitude_changed? || longitude_changed? || date_taken_changed?
+        taken: taken
+      ) if latitude_changed? || longitude_changed? || taken_changed?
 
     rescue => e
       Rails.logger.error("Image processing error for #{self.class.name} ID #{id}: #{e.message}")
@@ -221,8 +221,8 @@ class Image < ApplicationRecord
       %w[exif-ifd0-DateTime exif-ifd2-DateTimeOriginal].each do |field|
         if image.get_typeof(field) != 0
           datetime_str = image.get(field)
-          self.date_taken = parse_exif_datetime(datetime_str)
-          break if date_taken
+          self.taken = parse_exif_datetime(datetime_str)
+          break if taken
         end
       end
     rescue => e

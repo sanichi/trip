@@ -24,13 +24,13 @@ module ImageHelper
     parts.join(" ")
   end
 
-  def image_taken(date_taken, include_time = true)
-    return nil if date_taken.nil?
+  def image_taken(taken, include_time = true)
+    return nil if taken.nil?
 
     if include_time
-      date_taken.strftime("%H:%M %b %-d, %Y")
+      taken.strftime("%H:%M %b %-d, %Y")
     else
-      date_taken.strftime("%b %-d, %Y")
+      taken.strftime("%b %-d, %Y")
     end
   end
 

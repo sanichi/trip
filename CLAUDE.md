@@ -57,7 +57,7 @@ This Rails 8 application is being transformed from a simple notes template into 
 - **TripHelper**: Trip duration formatting, available slot detection
 - **ImageHelper**: Specialized formatters for consistent display:
   - `image_coordinates(lat, lon, decimals=4)`: Formats GPS as "N 57.1234 W 6.3847" with cardinal directions
-  - `image_taken(date_taken, include_time=true)`: Formats dates as "17:31 Oct 5, 2025" or "Oct 5, 2025"
+  - `image_taken(taken, include_time=true)`: Formats dates as "17:31 Oct 5, 2025" or "Oct 5, 2025"
   - `image_size(byte_size)`: Smart size formatting (B/KB/MB with appropriate precision)
   - `image_type(content_type)`: Formats type as "JPG", "PNG", "WEBP" etc.
 

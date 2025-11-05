@@ -30,8 +30,8 @@
               %th= t("image.user")
               %td= @image.user.name
             %tr
-              %th= t("image.date_taken")
-              %td= image_taken(@image.date_taken, true)
+              %th= t("image.taken")
+              %td= image_taken(@image.taken, true)
               %th= t("image.gps")
               %td= image_coordinates(@image.latitude, @image.longitude, 4)
   .footer
