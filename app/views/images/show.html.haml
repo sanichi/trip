@@ -37,4 +37,4 @@
   .footer
     - if can?(:edit, @image)
       = link_to t("edit"), edit_image_path(@image), class: "btn btn-primary btn-sm"
-    = link_to t("images"), images_path, class: "btn btn-success btn-sm"
+    = link_to t("image.images"), images_path, class: "btn btn-success btn-sm"

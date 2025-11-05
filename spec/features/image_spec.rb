@@ -9,11 +9,11 @@ describe Image, js: true do
   context "admins" do
     before(:each) do
       login(admin)
-      click_link t("images")
+      click_link t("image.images")
     end
 
     it "view images index" do
-      expect(page).to have_title t("images")
+      expect(page).to have_title t("image.images")
       expect(page).to have_content image.caption
     end
 
@@ -30,7 +30,7 @@ describe Image, js: true do
 
     before(:each) do
       login(user)
-      click_link t("images")
+      click_link t("image.images")
     end
 
     it "can view all images" do
@@ -56,7 +56,7 @@ describe Image, js: true do
     end
 
     it "cannot see images link" do
-      expect(page).to_not have_css "a", text: t("images")
+      expect(page).to_not have_css "a", text: t("image.images")
     end
 
     it "cannot view images index" do

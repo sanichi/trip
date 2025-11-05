@@ -1,18 +1,19 @@
 en:
   image:
-    image: Image
     caption: Caption
-    file: Image File
-    width: Width
-    height: Height
+    created: Uploaded
+    date_taken: Taken
     dimensions: Dimensions
+    file: Image File
+    gps: GPS
+    height: Height
+    image: Image
+    images: Images
+    latitude: Latitude
+    longitude: Longitude
+    new: New Image
+    search: Search
     size: Size
     type: Type
     user: User
-    gps: GPS
-    date_taken: Taken
-    latitude: Latitude
-    longitude: Longitude
-    created: Uploaded
-    search: Search
-    new: New Image
+    width: Width

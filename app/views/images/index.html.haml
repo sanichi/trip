@@ -1,5 +1,5 @@
 :ruby
-  set_meta_tags title: t("images")
+  set_meta_tags title: t("image.images")
   inputs = [
     [:query,  t("image.caption"), :text, "offset-md-1 md-3", size: 16, placeholder: t("image.search"), autofocus: true],
     [:user,   t("image.user"),    :text, "md-2",             size: 12, placeholder: t("image.user")],
@@ -7,7 +7,7 @@
 
 %section
   .header{class: "#{can?(:create, Image) ? '' : 'text-center'}"}
-    %h3.d-inline= t("images")
+    %h3.d-inline= t("image.images")
     - if can?(:create, Image)
       .float-end.mt-1= link_to t("new"), new_image_path, class: "btn btn-primary btn-sm"
   .body
@@ -16,7 +16,7 @@
       %table.mt-4{class: "table table-bordered table-sm"}
         %thead
           %tr
-            %th{rowspan: 3, class: "text-center align-middle"}= t("image.file")
+            %th{rowspan: 3, class: "text-center align-middle"}= t("image.image")
             %th{colspan: 3, class: "text-center"}= t("image.caption")
           %tr
             %th.text-center= t("image.dimensions")

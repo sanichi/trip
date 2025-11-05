@@ -11,7 +11,7 @@
         - if can?(:index, Trip)
           %li= link_to t("trip.trips"), trips_path
         - if can?(:index, Image)
-          %li= link_to t("images"), images_path
+          %li= link_to t("image.images"), images_path
         - if can?(:help, :page)
           %li= link_to t("pages.help.title"), help_path
         - if current_user.admin?
