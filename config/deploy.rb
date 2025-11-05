@@ -1,7 +1,7 @@
 set :application, "trip"
 set :repo_url, "git@github.com:sanichi/trip.git"
 append :linked_files, "config/database.yml", "config/master.key"
-append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
+append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "storage"
 set :log_level, :info
 set :branch, "main"
 set :ssh_options, { forward_agent: true }
