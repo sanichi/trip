@@ -18,10 +18,9 @@ describe Image, js: true do
     end
 
     it "view image" do
-      within("table tbody") do
-        first("a", text: image.caption[0..24]).click
-      end
-      expect(page).to have_title image.caption
+      visit image_path(image)
+      expect(page).to have_title "#{t('image.image')} #{image.id}"
+      expect(page).to have_content image.caption
       expect(page).to have_css "img"
     end
   end
@@ -40,10 +39,9 @@ describe Image, js: true do
     end
 
     it "can view image details" do
-      within("table tbody") do
-        first("a", text: user_image.caption[0..24]).click
-      end
-      expect(page).to have_title user_image.caption
+      visit image_path(user_image)
+      expect(page).to have_title "#{t('image.image')} #{user_image.id}"
+      expect(page).to have_content user_image.caption
     end
 
     it "can't edit other users' images" do

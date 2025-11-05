@@ -1,57 +1,39 @@
-- set_meta_tags title: @image.caption
+- set_meta_tags title: "#{t('image.image')} #{@image.id}"
 
 %section
-  .header
-    %h3.d-inline= @image.caption
+  .header.text-center
+    %h3= "#{t('image.image')} #{@image.id}"
   .body
     .text-center.mb-4
       - if @image.file.attached?
         = image_tag url_for(@image.file), class: "img-fluid", alt: @image.caption
     .row
-      .col-md-6
+      .col-12
         %table.table.table-sm
           %tbody
             %tr
-              %th= t("image.user")
-              %td= @image.user.name
+              %th= t("image.caption")
+              %td{colspan: 3}= @image.caption
             %tr
               %th= t("image.width")
               %td= "#{@image.width} px"
-            %tr
               %th= t("image.height")
               %td= "#{@image.height} px"
-      .col-md-6
-        %table.table.table-sm
-          %tbody
             %tr
               %th= t("image.size")
-              %td= "#{@image.size_mb} MB"
-            %tr
+              %td= image_size(@image.byte_size)
               %th= t("image.type")
-              %td= @image.content_type
+              %td= image_type(@image.content_type)
             %tr
               %th= t("image.created")
               %td= @image.created_at.strftime("%Y-%m-%d %H:%M")
-    - if @image.latitude && @image.longitude
-      .row.mt-3
-        .col-12
-          %h5= t("image.gps")
-          %table.table.table-sm
-            %tbody
-              %tr
-                %th= t("image.latitude")
-                %td= @image.latitude
-              %tr
-                %th= t("image.longitude")
-                %td= @image.longitude
-    - if @image.date_taken
-      .row.mt-3
-        .col-12
-          %table.table.table-sm
-            %tbody
-              %tr
-                %th= t("image.date_taken")
-                %td= @image.date_taken.strftime("%Y-%m-%d %H:%M:%S")
+              %th= t("image.user")
+              %td= @image.user.name
+            %tr
+              %th= t("image.date_taken")
+              %td= image_taken(@image.date_taken, true)
+              %th= t("image.gps")
+              %td= image_coordinates(@image.latitude, @image.longitude, 4)
   .footer
     - if can?(:edit, @image)
       = link_to t("edit"), edit_image_path(@image), class: "btn btn-primary btn-sm"

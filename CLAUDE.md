@@ -52,6 +52,15 @@ This Rails 8 application is being transformed from a simple notes template into 
   - `pagination/*`: Pagination links
 - Days displayed inline on Trip show page (no separate days index)
 
+### Helpers
+- **ApplicationHelper**: General utilities (pagination_links, center, col, home_page)
+- **TripHelper**: Trip duration formatting, available slot detection
+- **ImageHelper**: Specialized formatters for consistent display:
+  - `image_coordinates(lat, lon, decimals=4)`: Formats GPS as "N 57.1234 W 6.3847" with cardinal directions
+  - `image_taken(date_taken, include_time=true)`: Formats dates as "17:31 Oct 5, 2025" or "Oct 5, 2025"
+  - `image_size(byte_size)`: Smart size formatting (B/KB/MB with appropriate precision)
+  - `image_type(content_type)`: Formats type as "JPG", "PNG", "WEBP" etc.
+
 ### Testing (RSpec)
 - Feature specs with Capybara (JavaScript enabled)
 - FactoryBot for test data
@@ -132,6 +141,15 @@ Successfully implemented image upload functionality with intelligent processing:
    - Tested on Alma Linux 9.6 production server
    - Works without HEIC decoder libraries
    - Apple devices auto-convert HEIC→JPEG preserving GPS/date
+
+6. **Image Display Enhancements**:
+   - Created specialized helper methods in ImageHelper for consistent formatting
+   - GPS coordinates displayed with cardinal directions (N/S/E/W) instead of +/- signs
+   - Smart file size formatting (auto-selects B/KB/MB with appropriate precision)
+   - Date formatting with optional time display
+   - Image show page redesigned with prominent ID header (for future embedding)
+   - Index page restructured into compact 3-row format per image
+   - Removed width/height/size search inputs (not needed for typical use)
 
 ### Nested Resources Implementation (Days under Trips)
 Successfully implemented Days as a nested resource with several technical highlights:

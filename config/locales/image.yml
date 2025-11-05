@@ -1,14 +1,16 @@
 en:
   image:
+    image: Image
     caption: Caption
     file: Image File
     width: Width
     height: Height
-    size: Size (MB)
+    dimensions: Dimensions
+    size: Size
     type: Type
     user: User
     gps: GPS
-    date_taken: Date Taken
+    date_taken: Taken
     latitude: Latitude
     longitude: Longitude
     created: Uploaded

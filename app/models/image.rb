@@ -33,18 +33,6 @@ class Image < ApplicationRecord
       matches = matches.joins(:user).where(sql)
     end
 
-    if sql = numerical_constraint(params[:width], "active_storage_blobs.metadata->>'width'")
-      matches = matches.joins(file_attachment: :blob).where(sql)
-    end
-
-    if sql = numerical_constraint(params[:height], "active_storage_blobs.metadata->>'height'")
-      matches = matches.joins(file_attachment: :blob).where(sql)
-    end
-
-    if sql = numerical_constraint(params[:size], "(active_storage_blobs.byte_size / 1048576.0)", digits: 2)
-      matches = matches.joins(file_attachment: :blob).where(sql)
-    end
-
     paginate(matches, params, path, opt)
   end
 
