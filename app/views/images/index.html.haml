@@ -1,6 +1,6 @@
 :ruby
   set_meta_tags title: t("image.images")
-  lo = Sni::Layout.call(xl: [2,2], md: [3,3], xs: [4,4])
+  lo = Sni::Layout.call(xl: [3,3], md: [4,4], xs: [5,5])
   inputs = [
     [:query,  t("image.caption"), :text,   lo[0], size: 16, placeholder: t("image.caption"), autofocus: true],
     [:type,   t("image.type"),    :select, lo[1], menu: image_type_menu(params[:type])],
