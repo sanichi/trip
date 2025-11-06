@@ -1,8 +1,9 @@
 :ruby
   set_meta_tags title: t("image.images")
+  lo = Sni::Layout.call(xl: [2,2], md: [3,3], xs: [4,4])
   inputs = [
-    [:query,  t("image.caption"), :text, "offset-md-1 md-3", size: 16, placeholder: t("image.search"), autofocus: true],
-    [:user,   t("image.user"),    :text, "md-2",             size: 12, placeholder: t("image.user")],
+    [:query,  t("image.caption"), :text,   lo[0], size: 16, placeholder: t("image.caption"), autofocus: true],
+    [:type,   t("image.type"),    :select, lo[1], menu: image_type_menu(params[:type])],
   ]
 
 %section
@@ -32,9 +33,9 @@
               %td.text-center{rowspan: 3, style: "vertical-align: middle;"}
                 = link_to image_path(image), "data-turbo-frame" => "_top" do
                   - if image.file.attached?
-                    = image_tag url_for(image.thumbnail), alt: truncate(image.caption, length: 40), style: "max-height: 100px;"
+                    = image_tag url_for(image.thumbnail), alt: truncate(image.caption, length: Image::MAX_CAPTION_DISPLAY), style: "max-height: 100px;"
               %td.text-center{colspan: 3, title: image.caption}
-                = truncate(image.caption, length: 40)
+                = truncate(image.caption, length: Image::MAX_CAPTION_DISPLAY)
             %tr
               %td.text-center= image.width && image.height ? "#{image.width}×#{image.height}" : "N/A"
               %td.text-center= image_size(image.byte_size)

@@ -12,8 +12,8 @@ en:
     latitude: Latitude
     longitude: Longitude
     new: New Image
-    search: Search
     size: Size
     type: Type
+    type_any: Any Type
     user: User
     width: Width

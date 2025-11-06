@@ -34,8 +34,8 @@ describe Image, js: true do
     end
 
     it "can view all images" do
-      expect(page).to have_content image.caption
-      expect(page).to have_content user_image.caption
+      expect(page).to have_content image.caption.truncate(Image::MAX_CAPTION_DISPLAY)
+      expect(page).to have_content user_image.caption.truncate(Image::MAX_CAPTION_DISPLAY)
     end
 
     it "can view image details" do

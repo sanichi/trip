@@ -71,4 +71,11 @@ module ImageHelper
     # Special case for jpeg - display as JPG
     type == "jpeg" ? "JPG" : type.upcase
   end
+
+  def image_type_menu(selected)
+    opts = Image.all.map{ |i| i.content_type }.compact.uniq.sort.map{ |t| [image_type(t), t] }
+    opts.unshift [t("image.type_any"), ""]
+    options_for_select(opts, selected)
+  end
+
 end

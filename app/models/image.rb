@@ -3,6 +3,7 @@ class Image < ApplicationRecord
   include Pageable
 
   MAX_CAPTION = 250
+  MAX_CAPTION_DISPLAY = 40
   MAX_FILE_SIZE = 50.megabytes
   MAX_PROCESSED_SIZE = 3.megabytes
   MAX_DIMENSION = 1000
@@ -29,8 +30,8 @@ class Image < ApplicationRecord
       matches = matches.where(sql)
     end
 
-    if sql = cross_constraint(params[:user], %w{users.name users.email}, table: :users)
-      matches = matches.joins(:user).where(sql)
+    if (type = params[:type])&.match?(/\Aimage\/[a-z]+\z/)
+      matches = matches.joins(file_attachment: :blob).where(active_storage_blobs: { content_type: type })
     end
 
     paginate(matches, params, path, opt)
