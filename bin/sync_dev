@@ -1,2 +1,13 @@
 #!/bin/sh
+
+# Start directory is immaterial for DB sync, but important for image data.
+cd "$(dirname "$0")/.."
+
+# Database (-i or --info for dry-run might get passed in $1).
 sd -d trip -s mor $1
+
+# Images (show command if -i or --info, otherwise sync).
+case "$1" in
+  -i|--info) echo "images......... rsync -a --delete mor:/var/www/me.trip/shared/storage/ ./storage/" ;;
+  *) rsync -a --delete mor:/var/www/me.trip/shared/storage/ ./storage/ ;;
+esac
