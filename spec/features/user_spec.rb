@@ -90,7 +90,7 @@ describe User, js: true do
     end
 
     it "edit user" do
-      click_link user.email
+      click_link user.name
       click_link t("edit")
       fill_in t("user.name"), with: data.name
       click_button t("save")
@@ -104,7 +104,7 @@ describe User, js: true do
       expect(otpu.otp_secret).to be_present
       expect(otpu.last_otp_at).to be_present
 
-      click_link otpu.email
+      click_link otpu.name
       click_link t("edit")
       uncheck t("otp.required")
       click_button t("save")
@@ -117,7 +117,7 @@ describe User, js: true do
     end
 
     it "delete user" do
-      click_link user.email
+      click_link user.name
       click_link t("edit")
       accept_confirm do
         click_link t("delete")
