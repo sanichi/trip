@@ -113,6 +113,9 @@ class Image < ApplicationRecord
         image = Vips::Image.new_from_file(tempfile.path, fail_on: :none)
       end
 
+      # Apply EXIF orientation rotation to fix portrait/landscape orientation
+      image = image.autorot
+
       # Resize if needed
       processed_image = resize_if_needed(image, MAX_DIMENSION)
 
