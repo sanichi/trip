@@ -9,15 +9,15 @@
     %table{class: "table table-bordered table-sm mt-3"}
       %thead
         %tr
-          %th= t("user.email")
           %th= t("user.name")
+          %th= t("user.email")
           %th.text-center= t("user.admin")
           %th.text-center= t("otp.otp")
       %tbody
         - @users.each do |user|
           %tr
-            %td= link_to user.email, user
-            %td= user.name
+            %td= link_to user.name, user
+            %td= user.email
             %td.text-center= admin(user)
             %td.text-center
               = otp_required(user)
