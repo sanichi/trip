@@ -10,14 +10,12 @@
           %li= link_to t("trip.trips"), trips_path
         - if can?(:index, Image)
           %li= link_to t("image.images"), images_path
+        - if can?(:index, User)
+          %li= link_to t("user.users"), users_path
         - if can?(:help, :page)
           %li= link_to t("pages.help.title"), help_path
-        - if current_user.admin?
-          %li.dropdown
-            = link_to t("user.admin"), "#", class: "dropdown-toggle", "data-bs-toggle" => "dropdown", role: "button"
-            %ul.dropdown-menu
-              %li= link_to t("user.users"), users_path
-              %li= link_to t("pages.env.title"), env_path
+        - if can?(:env, :page)
+          %li= link_to t("pages.env.title"), env_path
       %ul.ms-auto
         - unless %/sessions otp_secrets/.include?(controller_name)
           - if current_user.guest?

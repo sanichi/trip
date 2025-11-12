@@ -17,7 +17,6 @@ describe PagesController, js: true do
 
     context "env" do
       it "show" do
-        click_link t("user.admin")
         click_link t("pages.env.title")
         expect(page).to have_title t("pages.env.title")
       end
@@ -44,7 +43,6 @@ describe PagesController, js: true do
 
     context "env" do
       it "show" do
-        expect(page).to_not have_css "a", text: t("user.admin")
         expect(page).to_not have_css "a", text: t("pages.env.title")
 
         visit env_path
@@ -73,7 +71,6 @@ describe PagesController, js: true do
 
     context "env" do
       it "show" do
-        expect(page).to_not have_css "a", text: t("user.admin")
         expect(page).to_not have_css "a", text: t("pages.env.title")
 
         visit env_path

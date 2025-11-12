@@ -9,7 +9,6 @@ describe User, js: true do
   context "admins" do
     before(:each) do
       login admin
-      click_link t("user.admin")
       click_link t("user.users")
     end
 
@@ -141,7 +140,6 @@ describe User, js: true do
     end
 
     it "can‘t list users" do
-      expect(page).to_not have_css "a", text: t("user.admin")
       expect(page).to_not have_css "a", text: t("user.users")
 
       visit users_path
@@ -198,7 +196,6 @@ describe User, js: true do
     end
 
     it "can‘t list users" do
-      expect(page).to_not have_css "a", text: t("user.admin")
       expect(page).to_not have_css "a", text: t("user.users")
 
       visit users_path
