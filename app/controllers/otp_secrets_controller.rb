@@ -29,7 +29,7 @@ class OtpSecretsController < ApplicationController
         session[:otp_user_id] = nil
         session[:otp_secret] = nil
         session[:user_id] = user.id
-        redirect_to notes_path
+        redirect_to trips_path
       else
         flash.now[:alert] = t("otp.invalid")
         @qr_code = qr_code(totp, user.email) if user.otp_secret.nil?

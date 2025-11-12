@@ -11,7 +11,7 @@ describe PagesController, js: true do
 
     context "home" do
       it "show" do
-        expect(page).to have_title t("note.notes")
+        expect(page).to have_title t("trip.trips")
       end
     end
 
@@ -38,7 +38,7 @@ describe PagesController, js: true do
 
     context "home" do
       it "show" do
-        expect(page).to have_title t("note.notes")
+        expect(page).to have_title t("trip.trips")
       end
     end
 

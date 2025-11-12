@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
         redirect_to new_otp_secret_path
       else
         session[:user_id] = user.id
-        redirect_to notes_path
+        redirect_to trips_path
       end
     else
       flash.now[:alert] = t("session.invalid")

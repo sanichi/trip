@@ -48,7 +48,7 @@ describe User, js: true do
       fill_in t("user.password"), with: data.password
       click_button t("session.sign_in")
 
-      expect(page).to have_title t("note.notes")
+      expect(page).to have_title t("trip.trips")
     end
 
     it "create otp user" do
@@ -86,7 +86,7 @@ describe User, js: true do
       fill_in t("otp.otp"), with: otp_attempt
       click_button t("otp.submit")
 
-      expect(page).to have_title t("note.notes")
+      expect(page).to have_title t("trip.trips")
     end
 
     it "edit user" do
@@ -167,7 +167,7 @@ describe User, js: true do
       fill_in t("otp.otp"), with: otp_attempt
       click_button t("otp.submit")
 
-      expect(page).to have_title t("note.notes")
+      expect(page).to have_title t("trip.trips")
     end
 
     it "can‘t use bad otp" do
@@ -182,7 +182,7 @@ describe User, js: true do
       fill_in t("otp.otp"), with: otp_attempt
       click_button t("otp.submit")
 
-      expect(page).to have_title t("note.notes")
+      expect(page).to have_title t("trip.trips")
     end
   end
 

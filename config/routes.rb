@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   get "sign_in" => "sessions#new"
 
   resources :images
-  resources :notes
   resources :trips do
     resources :days, except: [:index]
   end

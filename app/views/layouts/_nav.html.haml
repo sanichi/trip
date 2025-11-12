@@ -6,8 +6,6 @@
       %span
     #navbar.collapse.navbar-collapse
       %ul.me-auto
-        - if can?(:index, Note)
-          %li= link_to t("note.notes"), notes_path
         - if can?(:index, Trip)
           %li= link_to t("trip.trips"), trips_path
         - if can?(:index, Image)

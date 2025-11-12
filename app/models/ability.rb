@@ -10,8 +10,6 @@ class Ability
       can :help, :page
       can [:read, :create], Image
       can [:update, :destroy], Image, user_id: user.id
-      can [:read, :create], Note
-      can [:update, :destroy], Note, user_id: user.id
       can [:read, :create], Trip
       can [:update, :destroy], Trip, user_id: user.id
       can [:read, :create], Day

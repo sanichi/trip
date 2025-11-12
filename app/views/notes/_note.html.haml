@@ -1,6 +1,0 @@
-%tr
-  %td= link_to note.title, note, "data-turbo-frame" => "_top"
-  %td= note.user.name
-  %td.text-center= t("symbol.tick") if note.draft
-  %td.text-center= note.updated_at.strftime("%Y-%m-%d")
-  %td.text-center= note.created_at.strftime("%Y-%m-%d")
