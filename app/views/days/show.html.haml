@@ -5,8 +5,7 @@
     %h3= @day.title
     %h5.text-muted
       = @day.day_label
-      - if @day.draft
-        %span.badge.bg-warning.text-dark= t('symbol.draft')
+      = day_ready_badge(@day)
   .body
     - if @day.notes.present?
       .note= @day.html

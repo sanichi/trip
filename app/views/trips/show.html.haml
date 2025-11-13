@@ -17,15 +17,13 @@
               %tr
                 %th= t("day.day")
                 %th= t("day.title")
-                %th.text-center= t("day.draft")
+                %th.text-center= t("day.ready")
             %tbody
               - @trip.days.each do |day|
                 %tr
                   %td= link_to day.day_label, trip_day_path(@trip, day)
                   %td= truncate(day.title, length: 40)
-                  %td.text-center
-                    - if day.draft
-                      %span.badge.bg-warning.text-dark= t('symbol.draft')
+                  %td.text-center= day_ready_badge(day)
     - elsif can?(:create, Day)
       %p.text-muted No days yet.
   .footer
