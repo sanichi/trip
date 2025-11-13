@@ -130,11 +130,11 @@ describe Trip, js: true do
     end
 
     it "view" do
-      expect(page).to have_css "a", text: t("trip.trips")
-      click_link t("trip.trips")
-      expect(page).to have_title t("trip.trips")
-      click_link trip.title
-      expect(page).to have_title trip.title
+      visit trips_path
+      expect_forbidden page
+
+      visit trip_path(trip)
+      expect_forbidden page
     end
 
     it "create" do

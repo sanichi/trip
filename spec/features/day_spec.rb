@@ -195,10 +195,8 @@ describe Day, js: true do
     end
 
     it "view" do
-      visit trip_path(trip)
-      expect(page).to have_title trip.title
-      click_link day.day_label
-      expect(page).to have_title day.title
+      visit trip_day_path(trip, day)
+      expect_forbidden page
     end
 
     it "create" do

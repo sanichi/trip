@@ -17,7 +17,5 @@ class Ability
     end
 
     can :home, :page
-    can :read, Trip
-    can :read, Day
   end
 end
