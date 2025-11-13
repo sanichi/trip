@@ -1,5 +1,5 @@
 - defined?(save) || save = t("save")
-- defined?(center) || center = Sni::Center.call({})
+- defined?(center) || center = Sni::Center.call
 - actual_object = object.is_a?(Array) ? object.last : object
 - cancel_path = actual_object.new_record? ? index : (object.is_a?(Array) ? object : actual_object)
 - delete_path = object.is_a?(Array) ? object : actual_object
