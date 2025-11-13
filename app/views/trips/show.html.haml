@@ -10,12 +10,22 @@
     %h5.text-muted= trip_duration(@trip)
   .body
     - if @trip.days.any?
-      %ul
-        - @trip.days.each do |day|
-          %li
-            = link_to day.day_label, trip_day_path(@trip, day)
-            = ": #{day.title}"
-            = " #{t('symbol.draft')}" if day.draft
+      .row
+        %div{class: center(xl: 6, lg: 8, md: 10, sm: 12)}
+          %table.mt-4{class: "table table-bordered table-sm"}
+            %thead
+              %tr
+                %th= t("day.day")
+                %th= t("day.title")
+                %th.text-center= t("day.draft")
+            %tbody
+              - @trip.days.each do |day|
+                %tr
+                  %td= link_to day.day_label, trip_day_path(@trip, day)
+                  %td= truncate(day.title, length: 40)
+                  %td.text-center
+                    - if day.draft
+                      %span.badge.bg-warning.text-dark= t('symbol.draft')
     - elsif can?(:create, Day)
       %p.text-muted No days yet.
   .footer

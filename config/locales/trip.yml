@@ -1,5 +1,6 @@
 en:
   trip:
+    dates: Dates
     edit: Edit Trip
     end_date: End Date
     new: New Trip

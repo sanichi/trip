@@ -6,12 +6,13 @@
     - if can?(:create, Trip)
       .float-end.mt-1= link_to t("trip.new"), new_trip_path, class: "btn btn-primary btn-sm"
   .body
-    %table.mt-4{class: "table table-bordered table-sm"}
-      %thead
-        %tr
-          %th= t("trip.title")
-          %th= t("trip.start_date")
-          %th= t("trip.end_date")
-          %th= t("user.user")
-      %tbody
-        = render partial: "trip", collection: @trips
+    .row
+      %div{class: center(xl: 6, lg: 8, md: 10, sm: 12)}
+        %table.mt-4{class: "table table-bordered table-sm"}
+          %thead
+            %tr
+              %th= t("trip.title")
+              %th= t("trip.dates")
+              %th= t("user.user")
+          %tbody
+            = render partial: "trip", collection: @trips

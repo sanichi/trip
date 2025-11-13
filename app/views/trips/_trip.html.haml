@@ -1,5 +1,4 @@
 %tr
   %td= link_to trip.title, trip
-  %td= trip.start_date.strftime("%Y-%m-%d")
-  %td= trip.end_date.strftime("%Y-%m-%d")
+  %td= trip_duration(trip)
   %td= trip.user.name
