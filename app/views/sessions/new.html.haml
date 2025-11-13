@@ -1,7 +1,7 @@
 - set_meta_tags title: t("session.sign_in")
 
 .row
-  %div{class: center(xx: 3, xl: 4, lg: 5, md: 6, sm: 7, xs: 8)}
+  %div{class: Sni::Center.call(xx: 3, xl: 4, lg: 5, md: 6, sm: 7, xs: 8)}
     = form_with url: session_path, local: true, html: { class: "crud" } do |f|
       %section
         .body

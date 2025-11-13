@@ -5,4 +5,4 @@
     [:password,     t("user.password"), :password],
     [:otp_required, t("otp.required"),  :check],
   ]
-= render "utils/crud/form", object: user, index: users_path, inputs: inputs, title: title, center: center(xl: 4, lg: 6, md: 8, sm: 10)
+= render "utils/crud/form", object: user, index: users_path, inputs: inputs, title: title, center: Sni::Center.call(xl: 4, lg: 6, md: 8, sm: 10)

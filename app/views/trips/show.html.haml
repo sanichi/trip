@@ -11,7 +11,7 @@
   .body
     - if @trip.days.any?
       .row
-        %div{class: center(xl: 6, lg: 8, md: 10, sm: 12)}
+        %div{class: Sni::Center.call(xl: 6, lg: 8, md: 10, sm: 12)}
           %table.mt-4{class: "table table-bordered table-sm"}
             %thead
               %tr
