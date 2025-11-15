@@ -8,7 +8,7 @@
       = day_ready_badge(@day)
   .body
     - if @day.notes.present?
-      .note= @day.html
+      .note= @day.html(guest: current_user.guest?)
   .footer
     - if can?(:edit, @day)
       = link_to t("edit"), edit_trip_day_path(@trip, @day), class: "btn btn-primary btn-sm"

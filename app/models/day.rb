@@ -14,7 +14,9 @@ class Day < ApplicationRecord
 
   default_scope { order(date: :asc) }
 
-  def html = to_html(notes)
+  def html(guest: true)
+    to_html(notes, guest: guest)
+  end
   def day_label = "Day #{sequence}"
 
   def sequence

@@ -6,27 +6,54 @@
   .body
     %h5 Images
     %p
-      Add a special link something like this:
+      To embed an image, use markdown syntax with the image ID:
     %pre
-      ![this is a great photo](logo.png "200R")
+      ![](42 "12,10,8,6,c")
     %p
-      The text inside the square brackets is for assitive technologies and doesn't normally display.
-      The image source goes after the opening parenthesis.
-      The text in quotes is optional and in regular markdown would be used to give the image a
-      title but, in this application, is used instead to place and resize the image according
-      to the following rules:
+      %strong Image ID:
+      The number in parentheses is the image ID (found on the Images page).
+    %p
+      %strong Alt Text:
+      The text in square brackets is for assistive technologies. If left blank, the image's caption will be used automatically.
+    %p
+      %strong Breakpoints:
+      The quoted text controls responsive sizing across different screen sizes. Use 1-6 comma-separated integers (between 1-12) for Bootstrap column widths at breakpoints xs, sm, md, lg, xl, xx.
     %ul
       %li
-        By default, the image will be centered but if the letter R (or L) appears,
-        it will instead be floated to the right (or left).
+        %code "12,10,8,6"
+        → Full width on mobile (xs=12), narrower on larger screens (sm=10, md=8, lg=6)
       %li
-        By default, the image width will be resized to 300 pixels, but if a number
-        between 100 and 300 appears then this will be the width, or if a number between
-        10 and 100 appears followed by a percent sign, then the width will be this
-        fraction of the news item width.
+        %code "12,10"
+        → Two breakpoints only (xs=12, sm=10)
+      %li
+        %code ""
+        or omit quotes → Default full width (xs=12)
     %p
-      If the image source includes no forward slashes, it's interpreted as relative to the
-      public directory (e.g. a relative URL of /logo.png in the example given).
+      %strong Caption Display:
+      Optionally append
+      %code c
+      or
+      %code C
+      to show the image caption:
+    %ul
+      %li
+        %code "c"
+        or
+        %code "12,10,8,c"
+        → Caption displayed, centered
+      %li
+        %code "C"
+        or
+        %code "12,10,8,C"
+        → Caption displayed, left-aligned
+      %li No flag → Caption not displayed (default)
+    %p
+      %strong Examples:
+    %pre
+      ![](42)                 # Full width, no caption
+      ![](42 "c")             # Full width, centered caption
+      ![](42 "12,10,8,6,C")   # Responsive sizing, left-aligned caption
+      ![My description](42)   # Custom alt text, no caption
     %h5 Tables
     %p
       Entered like this.
