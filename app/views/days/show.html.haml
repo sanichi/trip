@@ -4,6 +4,14 @@
   .header.text-center
     %h3= @day.title
     %h5.text-muted
+      - if (prev_day = day_previous(@day))
+        = link_to trip_day_path(@trip, prev_day), class: "float-start small fw-normal" do
+          = t('symbol.previous')
+          = prev_day.day_label
+      - if (next_day = day_next(@day))
+        = link_to trip_day_path(@trip, next_day), class: "float-end small fw-normal" do
+          = next_day.day_label
+          = t('symbol.next')
       = @day.day_label
       = day_ready_badge(@day)
   .body

@@ -18,4 +18,6 @@ en:
   symbol:
     cross: ✘
     draft: 📝
+    next: ▶
+    previous: ◀
     tick: ✔︎
