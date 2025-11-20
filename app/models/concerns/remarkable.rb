@@ -73,15 +73,14 @@ module Remarkable
 
       # Build YouTube embed iframe
       embed_url = "https://www.youtube.com/embed/#{video_id}"
+      iframe = %Q(<div class="ratio ratio-16x9 border rounded"><iframe src="#{embed_url}" title="YouTube video player" allow="clipboard-write; picture-in-picture; web-share" allowfullscreen></iframe></div>)
+      caption_class = result[:center_caption] ? "figure-caption text-center px-2 pb-2" : "figure-caption px-2 pb-2"
 
       # Check if full width (xs: 12 only, which Bootstrap cascades upward)
       if result[:breakpoints] == { xs: 12 }
         # Full width - simple structure
-        iframe = %Q(<div class="ratio ratio-16x9 border rounded"><iframe src="#{embed_url}" allowfullscreen></iframe></div>)
-
-        # Wrap with caption if requested
-        if result[:show_caption] && alt.present?
-          caption_class = result[:center_caption] ? "figure-caption text-center px-2 pb-2" : "figure-caption px-2 pb-2"
+        if alt.present? && result[:show_caption]
+          # Wrap with caption if available and requested
           %Q(<figure class="figure w-100">#{iframe}<figcaption class="#{caption_class}">#{alt}</figcaption></figure>)
         else
           iframe
@@ -89,10 +88,8 @@ module Remarkable
       else
         # Partial width - caption must be inside column wrapper
         center_class = Sni::Center.call(**result[:breakpoints])
-        iframe = %Q(<div class="ratio ratio-16x9 border rounded"><iframe src="#{embed_url}" allowfullscreen></iframe></div>)
 
         if result[:show_caption] && alt.present?
-          caption_class = result[:center_caption] ? "figure-caption text-center px-2 pb-2" : "figure-caption px-2 pb-2"
           # Put both video and caption inside the column wrapper
           %Q(<div class="row"><div class="#{center_class}"><figure class="figure w-100">#{iframe}<figcaption class="#{caption_class}">#{alt}</figcaption></figure></div></div>)
         else
