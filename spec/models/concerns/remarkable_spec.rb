@@ -2,6 +2,8 @@ require "rails_helper"
 
 RSpec.describe Remarkable::CustomRenderer do
   let(:renderer) { described_class.new }
+  let(:guest_renderer) { described_class.new(guest: true) }
+  let(:non_guest_renderer) { described_class.new(guest: false) }
 
   describe "#parse_breakpoints" do
     context "with blank title" do
@@ -152,6 +154,136 @@ RSpec.describe Remarkable::CustomRenderer do
       it "rejects 'c' in middle of values" do
         result = renderer.send(:parse_breakpoints, "12,c,10")
         expect(result).to be_nil
+      end
+    end
+  end
+
+  describe "#image" do
+    context "YouTube video detection" do
+      it "detects 11-character alphanumeric video ID" do
+        html = non_guest_renderer.image("dQw4w9WgXcQ", "", "")
+        expect(html).to include("youtube.com/embed/dQw4w9WgXcQ")
+        expect(html).to include('class="ratio ratio-16x9')
+      end
+
+      it "handles video ID with hyphens and underscores" do
+        html = non_guest_renderer.image("dQw4w9W-XcQ", "", "")
+        expect(html).to include("youtube.com/embed/dQw4w9W-XcQ")
+      end
+
+      it "renders full-width video without centering classes" do
+        html = non_guest_renderer.image("dQw4w9WgXcQ", "", "")
+        expect(html).to include('ratio ratio-16x9')
+        expect(html).not_to include('col-')
+        expect(html).not_to include('offset-')
+      end
+
+      it "renders video with centered caption" do
+        html = non_guest_renderer.image("dQw4w9WgXcQ", "c", "Amazing video")
+        expect(html).to include("youtube.com/embed/dQw4w9WgXcQ")
+        expect(html).to include("Amazing video")
+        expect(html).to include("figure-caption text-center")
+        expect(html).to include('class="figure w-100"')
+      end
+
+      it "renders video with left-aligned caption" do
+        html = non_guest_renderer.image("dQw4w9WgXcQ", "C", "Amazing video")
+        expect(html).to include("youtube.com/embed/dQw4w9WgXcQ")
+        expect(html).to include("Amazing video")
+        expect(html).to include("figure-caption px-2")
+        expect(html).not_to include("text-center")
+      end
+
+      it "renders video with custom sizing" do
+        html = non_guest_renderer.image("dQw4w9WgXcQ", "8,6", "")
+        expect(html).to include("youtube.com/embed/dQw4w9WgXcQ")
+        expect(html).to include('class="row"')
+        expect(html).to include('col-8')
+        expect(html).to include('offset-2')
+      end
+
+      it "renders video with custom sizing and caption" do
+        html = non_guest_renderer.image("dQw4w9WgXcQ", "8,6,C", "Test caption")
+        expect(html).to include("youtube.com/embed/dQw4w9WgXcQ")
+        expect(html).to include("Test caption")
+        expect(html).to include('class="row"')
+        expect(html).to include('col-8')
+        expect(html).to include('figure class="figure w-100"')
+      end
+
+      it "does not show caption if alt text is blank" do
+        html = non_guest_renderer.image("dQw4w9WgXcQ", "c", "")
+        expect(html).to include("youtube.com/embed/dQw4w9WgXcQ")
+        expect(html).not_to include("figcaption")
+      end
+
+      it "includes allowfullscreen attribute" do
+        html = non_guest_renderer.image("dQw4w9WgXcQ", "", "")
+        expect(html).to include("allowfullscreen")
+      end
+    end
+
+    context "Active Storage image detection" do
+      it "detects numeric image ID" do
+        image = create(:image)
+        html = non_guest_renderer.image(image.id.to_s, "", "")
+        expect(html).to include("img")
+        expect(html).not_to include("youtube")
+      end
+
+      it "rejects non-existent image ID with error for non-guests" do
+        html = non_guest_renderer.image("99999", "", "")
+        expect(html).to include("alert-danger")
+        expect(html).to include("Image not found")
+      end
+
+      it "returns empty string for non-existent image ID for guests" do
+        html = guest_renderer.image("99999", "", "")
+        expect(html).to eq("")
+      end
+    end
+
+    context "invalid media ID" do
+      it "rejects 12-character string" do
+        html = non_guest_renderer.image("dQw4w9WgXcQx", "", "")
+        expect(html).to include("alert-danger")
+        expect(html).to include("Invalid media ID")
+      end
+
+      it "rejects 10-character string" do
+        html = non_guest_renderer.image("dQw4w9WgXc", "", "")
+        expect(html).to include("alert-danger")
+        expect(html).to include("Invalid media ID")
+      end
+
+      it "rejects special characters" do
+        html = non_guest_renderer.image("dQw4w9W@XcQ", "", "")
+        expect(html).to include("alert-danger")
+        expect(html).to include("Invalid media ID")
+      end
+
+      it "rejects empty string" do
+        html = non_guest_renderer.image("", "", "")
+        expect(html).to include("alert-danger")
+        expect(html).to include("Invalid media ID")
+      end
+
+      it "returns empty string for invalid ID for guests" do
+        html = guest_renderer.image("invalid", "", "")
+        expect(html).to eq("")
+      end
+    end
+
+    context "invalid breakpoint syntax" do
+      it "shows error for non-guests with invalid YouTube video breakpoints" do
+        html = non_guest_renderer.image("dQw4w9WgXcQ", "invalid", "")
+        expect(html).to include("alert-danger")
+        expect(html).to include("Invalid breakpoint syntax")
+      end
+
+      it "returns empty string for guests with invalid breakpoints" do
+        html = guest_renderer.image("dQw4w9WgXcQ", "invalid", "")
+        expect(html).to eq("")
       end
     end
   end

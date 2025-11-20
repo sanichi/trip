@@ -54,6 +54,47 @@
       ![](42 "c")             # Full width, centered caption
       ![](42 "12,10,8,6,C")   # Responsive sizing, left-aligned caption
       ![My description](42)   # Custom alt text, no caption
+    %h5 YouTube Videos
+    %p
+      To embed a YouTube video, use the same markdown syntax with the 11-character video ID:
+    %pre
+      ![](dQw4w9WgXcQ "12,10,8,6,c")
+    %p
+      %strong Video ID:
+      The 11-character ID in parentheses is from the YouTube URL. For example:
+    %ul
+      %li
+        %code https://www.youtube.com/watch?v=dQw4w9WgXcQ
+        → ID is
+        %code dQw4w9WgXcQ
+      %li
+        %code https://youtu.be/dQw4w9WgXcQ
+        → ID is
+        %code dQw4w9WgXcQ
+    %p
+      %strong Caption:
+      The text in square brackets becomes the video caption (only shown if you include the
+      %code c
+      or
+      %code C
+      flag).
+    %p
+      %strong Breakpoints:
+      Same as images - use 1-6 comma-separated integers (1-12) for responsive sizing. Videos maintain 16:9 aspect ratio automatically.
+    %p
+      %strong Caption Display:
+      Same as images - append
+      %code c
+      (centered) or
+      %code C
+      (left-aligned) to show the caption.
+    %p
+      %strong Examples:
+    %pre
+      ![](dQw4w9WgXcQ)              # Full width, no caption
+      ![My video](dQw4w9WgXcQ "c")  # Full width, centered caption
+      ![](dQw4w9WgXcQ "8,6")        # Responsive sizing, no caption
+      ![](dQw4w9WgXcQ "8,6,C")      # Responsive sizing, left-aligned caption
     %h5 Tables
     %p
       Entered like this.

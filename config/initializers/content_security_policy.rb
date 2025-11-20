@@ -11,6 +11,7 @@ Rails.application.configure do
     policy.img_src         :self, :data
     policy.script_src      :self
     policy.style_src       :self, :unsafe_inline # redcarpet
+    policy.frame_src       :self, "https://www.youtube.com"
     policy.base_uri        :self
     policy.frame_ancestors :none
     policy.form_action     :self

@@ -22,12 +22,21 @@ module Remarkable
     end
 
     def image(link, title, alt)
-      # Parse image ID
-      image_id = link.to_i
-      if image_id <= 0
-        return error_or_nothing("Invalid image ID: \"#{link}\"")
+      # Detect media type based on link format
+      if link.match?(/\A\d+\z/)
+        # Numeric ID → Active Storage image
+        render_active_storage_image(link.to_i, title, alt)
+      elsif link.match?(/\A[a-zA-Z0-9_-]{11}\z/)
+        # 11-char alphanumeric → YouTube video
+        render_youtube_video(link, title, alt)
+      else
+        error_or_nothing("Invalid media ID: \"#{link}\" (use numeric ID for images or 11-character YouTube video ID)")
       end
+    end
 
+    private
+
+    def render_active_storage_image(image_id, title, alt)
       # Look up image
       image = Image.find_by(id: image_id)
       unless image
@@ -40,28 +49,63 @@ module Remarkable
         return error_or_nothing("Invalid breakpoint syntax: \"#{title}\" (use 1-6 integers between 1-12, optionally append 'c' for centered caption or 'C' for left-aligned caption)")
       end
 
-      breakpoints = result[:breakpoints]
-      show_caption = result[:show_caption]
-      center_caption = result[:center_caption]
-
       # Use image caption as alt text if none provided
       alt_text = alt.present? ? alt : image.caption
-
-      # Generate centered div with responsive image
-      center_class = Sni::Center.call(**breakpoints)
       image_url = Rails.application.routes.url_helpers.rails_blob_path(image.file, only_path: true)
 
-      if show_caption
-        # Use figure with figcaption for semantic HTML
-        caption_class = center_caption ? "figure-caption text-center px-2 pb-2" : "figure-caption px-2 pb-2"
-        %Q(<div class="#{center_class}"><figure class="figure border rounded"><img src="#{image_url}" alt="#{alt_text}" class="img-fluid figure-img" width="#{image.width}" height="#{image.height}"><figcaption class="#{caption_class}">#{image.caption}</figcaption></figure></div>)
+      # Generate responsive image HTML
+      if result[:show_caption]
+        caption_class = result[:center_caption] ? "figure-caption text-center px-2 pb-2" : "figure-caption px-2 pb-2"
+        content = %Q(<figure class="figure w-100 border rounded"><img src="#{image_url}" alt="#{alt_text}" class="img-fluid figure-img" width="#{image.width}" height="#{image.height}"><figcaption class="#{caption_class}">#{image.caption}</figcaption></figure>)
       else
-        # Just image in div
-        %Q(<div class="#{center_class}"><img src="#{image_url}" alt="#{alt_text}" class="img-fluid border rounded" width="#{image.width}" height="#{image.height}"></div>)
+        content = %Q(<img src="#{image_url}" alt="#{alt_text}" class="img-fluid border rounded" width="#{image.width}" height="#{image.height}">)
+      end
+
+      wrap_in_centered_div(content, result[:breakpoints])
+    end
+
+    def render_youtube_video(video_id, title, alt)
+      # Parse breakpoints and caption flag from title
+      result = parse_breakpoints(title)
+      unless result
+        return error_or_nothing("Invalid breakpoint syntax: \"#{title}\" (use 1-6 integers between 1-12, optionally append 'c' for centered caption or 'C' for left-aligned caption)")
+      end
+
+      # Build YouTube embed iframe
+      embed_url = "https://www.youtube.com/embed/#{video_id}"
+
+      # Check if full width (xs: 12 only, which Bootstrap cascades upward)
+      if result[:breakpoints] == { xs: 12 }
+        # Full width - simple structure
+        iframe = %Q(<div class="ratio ratio-16x9 border rounded"><iframe src="#{embed_url}" allowfullscreen></iframe></div>)
+
+        # Wrap with caption if requested
+        if result[:show_caption] && alt.present?
+          caption_class = result[:center_caption] ? "figure-caption text-center px-2 pb-2" : "figure-caption px-2 pb-2"
+          %Q(<figure class="figure w-100">#{iframe}<figcaption class="#{caption_class}">#{alt}</figcaption></figure>)
+        else
+          iframe
+        end
+      else
+        # Partial width - caption must be inside column wrapper
+        center_class = Sni::Center.call(**result[:breakpoints])
+        iframe = %Q(<div class="ratio ratio-16x9 border rounded"><iframe src="#{embed_url}" allowfullscreen></iframe></div>)
+
+        if result[:show_caption] && alt.present?
+          caption_class = result[:center_caption] ? "figure-caption text-center px-2 pb-2" : "figure-caption px-2 pb-2"
+          # Put both video and caption inside the column wrapper
+          %Q(<div class="row"><div class="#{center_class}"><figure class="figure w-100">#{iframe}<figcaption class="#{caption_class}">#{alt}</figcaption></figure></div></div>)
+        else
+          # Just video in column wrapper
+          %Q(<div class="row"><div class="#{center_class}">#{iframe}</div></div>)
+        end
       end
     end
 
-    private
+    def wrap_in_centered_div(content, breakpoints)
+      center_class = Sni::Center.call(**breakpoints)
+      %Q(<div class="#{center_class}">#{content}</div>)
+    end
 
     def link_with_target(link, text=nil)
       return unless link =~ /\A(.+)\|(\w*)\z/
