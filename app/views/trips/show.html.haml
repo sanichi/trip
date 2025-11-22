@@ -15,13 +15,15 @@
           %table.mt-4{class: "table table-bordered table-sm"}
             %thead
               %tr
-                %th= t("day.day")
+                %th.text-center= t("day.day")
+                %th.text-center= t("day.date")
                 %th= t("day.title")
                 %th.text-center= t("day.ready")
             %tbody
               - @trip.days.each do |day|
                 %tr
-                  %td= link_to day.day_label, trip_day_path(@trip, day)
+                  %td.text-center= link_to day.day_label, trip_day_path(@trip, day)
+                  %td.text-center= day_date(day)
                   %td= truncate(day.title, length: 40)
                   %td.text-center= day_ready_badge(day)
     - elsif can?(:create, Day)
