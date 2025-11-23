@@ -46,6 +46,7 @@ This Rails 8 application is being transformed from a simple notes template into 
 ### Views (HAML)
 - Bootstrap 5 styling
 - Turbo frames for dynamic content
+- **Turbo caching disabled** in `_head.html.haml` via `turbo-prefetch: false` and `turbo-cache-control: no-preview`. This prevents stale session-dependent content (like the Admin link on the home page, which uses `session[:last_admin_page]`) from being shown during Turbo's prefetch or cached preview phases.
 - Reusable partials in `app/views/utils/`:
   - `crud/*`: Form helpers (text, area, select, check, password, buttons) - **Enhanced to support nested resources by accepting arrays as model parameter**
   - `search/*`: Search form components
