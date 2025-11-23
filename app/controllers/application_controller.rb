@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  before_action :track_admin_page
+
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
       format.html { redirect_to sign_in_path, alert: exception.message }
@@ -24,5 +26,15 @@ class ApplicationController < ActionController::Base
 
   def failure(object)
     flash.now[:alert] = object.errors.full_messages.join(", ")
+  end
+
+  ADMIN_CONTROLLERS = %w[trips days images users notes].freeze
+
+  def track_admin_page
+    return unless request.get?
+    return unless ADMIN_CONTROLLERS.include?(controller_name)
+    return unless %w[index show].include?(action_name)
+
+    session[:last_admin_page] = request.fullpath
   end
 end

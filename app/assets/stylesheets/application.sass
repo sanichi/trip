@@ -94,3 +94,41 @@ pre
 // Links
 a
   @extend .text-decoration-none
+
+// Viewer layout (home page)
+body.viewer
+  .trip-selector
+    h2
+      @extend .text-primary
+
+  .day-navigator
+    .nav-arrow
+      @extend .mx-1, .text-secondary
+      font-size: 1.2rem
+      &.disabled
+        opacity: 0.3
+        cursor: default
+
+    .day-links
+      @extend .mx-2
+      .day-link
+        @extend .mx-2, .text-secondary
+      .current-day
+        @extend .mx-2, .fw-bold, .text-primary
+        .day-date
+          @extend .ms-1
+
+  .day-content
+    .content
+      @extend .mt-3
+      table
+        @extend .table-bordered, .table-striped, .table-light, .mb-3
+        margin-left: auto
+        margin-right: auto
+        td
+          @extend .p-1, .table-success
+        th
+          @extend .p-1, .table-info
+
+  .admin-link
+    @extend .border-top, .pt-3

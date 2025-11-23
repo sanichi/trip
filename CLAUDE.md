@@ -1,4 +1,4 @@
-# Travel Blog Project - Japan Trip 2025
+# Travel Blog Project - Japan Trip 2026
 
 ## Project Overview
 
@@ -55,11 +55,18 @@ This Rails 8 application is being transformed from a simple notes template into 
 ### Helpers
 - **ApplicationHelper**: General utilities (pagination_links, center, col, home_page)
 - **TripHelper**: Trip duration formatting, available slot detection
+- **DayHelper**: Day date formatting, ready badge, previous/next day navigation
 - **ImageHelper**: Specialized formatters for consistent display:
   - `image_coordinates(lat, lon, decimals=4)`: Formats GPS as "N 57.1234 W 6.3847" with cardinal directions
   - `image_taken(taken, include_time=true)`: Formats dates as "17:31 Oct 5, 2025" or "Oct 5, 2025"
   - `image_size(byte_size)`: Smart size formatting (B/KB/MB with appropriate precision)
   - `image_type(content_type)`: Formats type as "JPG", "PNG", "WEBP" etc.
+- **ViewerHelper**: Home page (viewer) specific helpers:
+  - `day_window(days, current_day)`: Returns sliding window of 5 days centered on current
+  - `show_nav_arrows?(days)`: Returns true if more than 5 days (arrows needed)
+  - `first_day/last_day/previous_day/next_day`: Navigation helpers
+  - `at_first_day?/at_last_day?`: Boundary detection for disabling arrows
+  - `admin_return_path`: Returns last admin page from session or trips index
 
 ### Testing (RSpec)
 - Feature specs with Capybara (JavaScript enabled)
@@ -171,6 +178,45 @@ Successfully implemented Days as a nested resource with several technical highli
    - Dynamic day labels ("Day 1", "Day 2") calculated from date position
    - Sparse day support (can have Day 1, 3, 5 without 2 and 4)
 
+### Public Home Page (Viewer) Implementation
+Built a dedicated viewer experience for guests (family members) to read trip blogs:
+
+1. **Trip Readiness Concept**:
+   - Added `scope :ready` and `ready?` method to Trip model
+   - A trip is "ready" when it has at least one non-draft day
+   - Only ready trips appear on the home page
+
+2. **Viewer Layout** (`app/views/layouts/viewer.html.haml`):
+   - Clean, minimal layout without admin navigation
+   - Always used for home page regardless of login status
+
+3. **Four-Part Home Page Structure**:
+   - **Part 1 - Trip Selector**: Dropdown menu for multiple trips, plain title for single trip
+   - **Part 2 - Day Navigator**: Sliding window of 5 days with navigation arrows (⏮ ◀ ▶ ⏭)
+   - **Part 3 - Day Content**: Rendered markdown from selected day's notes
+   - **Part 4 - Admin Link**: "Sign In" for guests, "Admin" for logged-in users
+
+4. **Smart Navigation**:
+   - Arrows appear only when >5 ready days
+   - Current day shown as highlighted date (e.g., "Mon May 5"), others as day links
+   - Double arrows (⏮/⏭) jump to first/last day, single arrows (◀/▶) move one day
+
+5. **Session Memory**:
+   - Tracks last viewed day per trip
+   - Tracks last admin page for "Admin" link return
+   - Remembers position when switching between trips
+
+6. **Default Selection Logic**:
+   - Returning visitor → last viewed day from session
+   - In-progress trip (today within dates) → latest ready day
+   - Otherwise → first ready day of latest trip
+
+7. **Feature Specs** (13 tests):
+   - No ready trips, one trip, multiple trips scenarios
+   - Day navigator visibility and arrow behavior
+   - Draft day filtering
+   - Guest vs logged-in user admin link
+
 ## Next Steps
 
 ### Phase 1: Fix Critical Issues
@@ -243,9 +289,20 @@ Successfully implemented Days as a nested resource with several technical highli
 - [ ] Add image embedding to day notes (Remarkable concern updates)
 - [ ] Link images to specific days/trips
 
-### Phase 6: Polish
-- [ ] Remove Note model and related code
-- [ ] Add production deployment configuration
+### Phase 6: Home Page (Viewer)
+- [x] Add `ready?` method and `scope :ready` to Trip model
+- [x] Create viewer layout (`layouts/viewer.html.haml`)
+- [x] Build PagesController home action with trip/day selection logic
+- [x] Create ViewerHelper for day window and navigation
+- [x] Build home view with four parts (trip selector, day navigator, content, admin link)
+- [x] Add session tracking for last viewed day per trip
+- [x] Add session tracking for last admin page
+- [x] Add viewer-specific CSS styling
+- [x] Write feature specs (13 tests, all passing)
+
+### Phase 7: Polish
+- [x] Remove Note model and related code
+- [x] Add production deployment configuration
 - [ ] Performance optimization
 - [ ] SEO metadata for public trip pages
 - [ ] Mobile responsive design verification

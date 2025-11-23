@@ -1,2 +1,54 @@
-- title = current_user.guest? ? t("pages.home.title") : current_user.name
+- title = @trip&.title || t("pages.home.title")
 - set_meta_tags title: title, description: t("pages.home.description"), keywords: t("pages.home.keywords")
+
+- if @trip.present?
+  /- Part 1: Trip selector
+  .trip-selector.text-center.mb-4
+    - if @trips.size == 1
+      %h2= @trip.title
+    - else
+      .dropdown
+        %button.btn.btn-outline-secondary.dropdown-toggle{type: "button", "data-bs-toggle" => "dropdown"}
+          = @trip.title
+        %ul.dropdown-menu
+          - @trips.each do |trip|
+            %li
+              = link_to trip.title, root_path(trip: trip.id), class: "dropdown-item #{'active' if trip == @trip}"
+
+  /- Part 2: Day navigator
+  .day-navigator.text-center.mb-4
+    - if show_nav_arrows?(@days)
+      - if at_first_day?(@days, @day)
+        %span.nav-arrow.disabled= t("symbol.first")
+        %span.nav-arrow.disabled= t("symbol.previous")
+      - else
+        = link_to t("symbol.first"), root_path(day: first_day(@days).id), class: "nav-arrow"
+        = link_to t("symbol.previous"), root_path(day: previous_day(@days, @day).id), class: "nav-arrow"
+
+    .day-links.d-inline
+      - day_window(@days, @day).each do |day|
+        - if day == @day
+          %span.current-day= day_date(day)
+        - else
+          = link_to day.day_label, root_path(day: day.id), class: "day-link"
+
+    - if show_nav_arrows?(@days)
+      - if at_last_day?(@days, @day)
+        %span.nav-arrow.disabled= t("symbol.next")
+        %span.nav-arrow.disabled= t("symbol.last")
+      - else
+        = link_to t("symbol.next"), root_path(day: next_day(@days, @day).id), class: "nav-arrow"
+        = link_to t("symbol.last"), root_path(day: last_day(@days).id), class: "nav-arrow"
+
+  /- Part 3: Day content
+  .day-content
+    - if @day.notes.present?
+      .content= @day.html(guest: true)
+
+/- Part 4: Admin link (always shown)
+.admin-link.text-center.mt-5
+  %small.text-muted
+    - if current_user.guest?
+      = link_to t("session.sign_in"), new_session_path, class: "text-muted"
+    - else
+      = link_to t("user.admin"), admin_return_path, class: "text-muted"

@@ -5,6 +5,8 @@ class Trip < ApplicationRecord
   belongs_to :user, inverse_of: :trips
   has_many :days, inverse_of: :trip, dependent: :destroy
 
+  scope :ready, -> { joins(:days).where(days: { draft: false }).distinct }
+
   before_validation :normalize_attributes
 
   validates :title, presence: true, length: { maximum: MAX_TITLE }
@@ -15,6 +17,10 @@ class Trip < ApplicationRecord
   validate :date_changes_dont_invalidate_days
 
   default_scope { order(created_at: :desc) }
+
+  def ready?
+    days.exists?(draft: false)
+  end
 
   private
 
