@@ -56,9 +56,9 @@ module Remarkable
       # Generate responsive image HTML
       if result[:show_caption]
         caption_class = result[:center_caption] ? "figure-caption text-center px-2 pb-2" : "figure-caption px-2 pb-2"
-        content = %Q(<figure class="figure w-100 border rounded"><img src="#{image_url}" alt="#{alt_text}" class="img-fluid figure-img" width="#{image.width}" height="#{image.height}"><figcaption class="#{caption_class}">#{image.caption}</figcaption></figure>)
+        content = %Q(<figure class="figure w-100 border rounded text-center"><img src="#{image_url}" alt="#{alt_text}" class="img-fluid figure-img" width="#{image.width}" height="#{image.height}"><figcaption class="#{caption_class}">#{image.caption}</figcaption></figure>)
       else
-        content = %Q(<img src="#{image_url}" alt="#{alt_text}" class="img-fluid border rounded" width="#{image.width}" height="#{image.height}">)
+        content = %Q(<img src="#{image_url}" alt="#{alt_text}" class="img-fluid border rounded d-block mx-auto" width="#{image.width}" height="#{image.height}">)
       end
 
       wrap_in_centered_div(content, result[:breakpoints])

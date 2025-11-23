@@ -12,10 +12,10 @@ module DayHelper
   end
 
   def day_previous(day)
-    day.trip.days.where("date < ?", day.date).order(date: :desc).first
+    day.trip.days.where("date < ?", day.date).reorder(date: :desc).first
   end
 
   def day_next(day)
-    day.trip.days.where("date > ?", day.date).order(date: :asc).first
+    day.trip.days.where("date > ?", day.date).reorder(date: :asc).first
   end
 end
