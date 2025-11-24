@@ -25,7 +25,7 @@
                   %td.text-center= link_to day.day_label, trip_day_path(@trip, day)
                   %td.text-center= day_date(day)
                   %td= truncate(day.title, length: 40)
-                  %td.text-center= day_ready_badge(day)
+                  %td.text-center= render "days/draft_badge", day: day
     - elsif can?(:create, Day)
       %p.text-muted No days yet.
   .footer

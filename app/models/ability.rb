@@ -2,6 +2,8 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    alias_action :toggle_draft, to: :update
+
     if user.admin?
       can :manage, :all
     end

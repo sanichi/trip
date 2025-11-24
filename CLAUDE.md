@@ -219,6 +219,29 @@ Built a dedicated viewer experience for guests (family members) to read trip blo
    - Draft day filtering
    - Guest vs logged-in user admin link
 
+### Inline Draft Toggle (Turbo Stream)
+Added ability to toggle a day's draft status directly from the trip show page without navigating away:
+
+1. **Implementation**:
+   - Clicking the ready badge (✓/✗) toggles the draft status in-place
+   - Uses Turbo Stream for seamless updates without page reload
+   - Only authorized users see clickable badges; others see static badges
+
+2. **Files Modified**:
+   - `config/routes.rb` - Added `patch :toggle_draft` member route on days
+   - `app/controllers/days_controller.rb` - Added `toggle_draft` action
+   - `app/models/ability.rb` - Added `alias_action :toggle_draft, to: :update` for authorization
+   - `app/views/trips/show.html.haml` - Updated to use draft badge partial
+
+3. **Files Added**:
+   - `app/views/days/_draft_badge.html.haml` - Partial with Turbo Frame wrapper, renders as button for authorized users
+   - `app/views/days/toggle_draft.turbo_stream.haml` - Turbo Stream response to replace the badge
+
+4. **Feature Specs** (3 new tests in `spec/features/day_spec.rb`):
+   - Admin can toggle draft status from trip page (both directions)
+   - User can toggle their own day's draft status
+   - User cannot toggle other users' days (no button shown)
+
 ## Next Steps
 
 ### Phase 1: Fix Critical Issues
@@ -265,12 +288,13 @@ Built a dedicated viewer experience for guests (family members) to read trip blo
 - [x] Test admin access (everything) ✓
 - [x] Update Ability model for days (using trip association traversal: `trip: { user_id: user.id }`)
 - [x] Create factory for days
-- [x] Write feature specs for days (16 tests, all passing)
+- [x] Write feature specs for days (19 tests, all passing)
 - [x] Test CRUD operations for admins, users, and guests ✓
 - [x] Test date validations (day within trip range) ✓
 - [x] Test trip date change prevention when it would orphan days ✓
 - [x] Test slot availability and default date assignment ✓
 - [x] Test draft status handling ✓
+- [x] Add inline draft toggle with Turbo Stream ✓
 
 ### Phase 5: Active Storage & Media
 - [x] Install Active Storage (migrations created)

@@ -93,6 +93,37 @@ describe Day, js: true do
       end
     end
 
+    context "toggle draft" do
+      it "toggles draft status from trip page" do
+        expect(day.draft).to eq false
+
+        # Should see a button (clickable badge)
+        within("tr", text: day.day_label) do
+          expect(page).to have_css("button")
+          click_button t("symbol.tick")
+        end
+
+        # Badge should change to draft (cross)
+        within("tr", text: day.day_label) do
+          expect(page).to have_content t("symbol.cross")
+        end
+
+        # Verify database change
+        expect(day.reload.draft).to eq true
+
+        # Toggle back
+        within("tr", text: day.day_label) do
+          click_button t("symbol.cross")
+        end
+
+        within("tr", text: day.day_label) do
+          expect(page).to have_content t("symbol.tick")
+        end
+
+        expect(day.reload.draft).to eq false
+      end
+    end
+
     context "date validations" do
       it "cannot create day outside trip date range" do
         click_link t("day.new")
@@ -186,6 +217,33 @@ describe Day, js: true do
     it "can't edit other users' days" do
       visit edit_trip_day_path(trip, day)
       expect_forbidden(page)
+    end
+
+    context "toggle draft" do
+      it "can toggle own day's draft status" do
+        click_link user_trip.title
+
+        within("tr", text: user_day.day_label) do
+          expect(page).to have_css("button")
+          click_button t("symbol.cross")
+        end
+
+        within("tr", text: user_day.day_label) do
+          expect(page).to have_content t("symbol.tick")
+        end
+
+        expect(user_day.reload.draft).to eq false
+      end
+
+      it "cannot toggle other users' days" do
+        click_link trip.title
+
+        # Should see badge but not as a button
+        within("tr", text: day.day_label) do
+          expect(page).not_to have_css("button")
+          expect(page).to have_content t("symbol.tick")
+        end
+      end
     end
   end
 

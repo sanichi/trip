@@ -38,6 +38,13 @@ class DaysController < ApplicationController
     redirect_to trip_path(@trip)
   end
 
+  def toggle_draft
+    @day.update!(draft: !@day.draft)
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
   private
 
   def set_trip
