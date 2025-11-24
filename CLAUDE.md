@@ -191,11 +191,12 @@ Built a dedicated viewer experience for guests (family members) to read trip blo
    - Clean, minimal layout without admin navigation
    - Always used for home page regardless of login status
 
-3. **Four-Part Home Page Structure**:
+3. **Five-Part Home Page Structure**:
    - **Part 1 - Trip Selector**: Dropdown menu for multiple trips, plain title for single trip
    - **Part 2 - Day Navigator**: Sliding window of 5 days with navigation arrows (⏮ ◀ ▶ ⏭)
-   - **Part 3 - Day Content**: Rendered markdown from selected day's notes
-   - **Part 4 - Admin Link**: "Sign In" for guests, "Admin" for logged-in users
+   - **Part 3 - Day Title**: Centered h3 heading showing the current day's title
+   - **Part 4 - Day Content**: Rendered markdown from selected day's notes
+   - **Part 5 - Admin Link**: "Sign In" for guests, "Admin" for logged-in users
 
 4. **Smart Navigation**:
    - Arrows appear only when >5 ready days

@@ -40,12 +40,16 @@
         = link_to t("symbol.next"), root_path(day: next_day(@days, @day).id), class: "nav-arrow"
         = link_to t("symbol.last"), root_path(day: last_day(@days).id), class: "nav-arrow"
 
-  /- Part 3: Day content
+  /- Part 3: Day title
+  .day-title.text-center.mb-4
+    %h3= @day.title
+
+  /- Part 4: Day content
   .day-content
     - if @day.notes.present?
       .content= @day.html(guest: true)
 
-/- Part 4: Admin link (always shown)
+/- Part 5: Admin link (always shown)
 .admin-link.text-center.mt-5
   %small.text-muted
     - if current_user.guest?
