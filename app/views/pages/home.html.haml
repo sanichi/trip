@@ -18,13 +18,18 @@
   /- Part 2: Day navigator (only shown when multiple days exist)
   - if show_day_navigator?(@days)
     .day-navigator.text-center.mb-4
+      /- First/last arrows (only when >5 days, meaning some are hidden)
       - if show_nav_arrows?(@days)
         - if at_first_day?(@days, @day)
           %span.nav-arrow.disabled= t("symbol.first")
-          %span.nav-arrow.disabled= t("symbol.previous")
         - else
           = link_to t("symbol.first"), root_path(day: first_day(@days).id), class: "nav-arrow"
-          = link_to t("symbol.previous"), root_path(day: previous_day(@days, @day).id), class: "nav-arrow"
+
+      /- Previous arrow (always shown in navigator)
+      - if at_first_day?(@days, @day)
+        %span.nav-arrow.disabled= t("symbol.previous")
+      - else
+        = link_to t("symbol.previous"), root_path(day: previous_day(@days, @day).id), class: "nav-arrow"
 
       .day-links.d-inline
         - day_window(@days, @day).each do |day|
@@ -37,12 +42,17 @@
               %span.d-md-none= day_label(day, long: false)
               %span.d-none.d-md-inline= day_label(day)
 
+      /- Next arrow (always shown in navigator)
+      - if at_last_day?(@days, @day)
+        %span.nav-arrow.disabled= t("symbol.next")
+      - else
+        = link_to t("symbol.next"), root_path(day: next_day(@days, @day).id), class: "nav-arrow"
+
+      /- Last arrow (only when >5 days, meaning some are hidden)
       - if show_nav_arrows?(@days)
         - if at_last_day?(@days, @day)
-          %span.nav-arrow.disabled= t("symbol.next")
           %span.nav-arrow.disabled= t("symbol.last")
         - else
-          = link_to t("symbol.next"), root_path(day: next_day(@days, @day).id), class: "nav-arrow"
           = link_to t("symbol.last"), root_path(day: last_day(@days).id), class: "nav-arrow"
 
   /- Part 3: Day date

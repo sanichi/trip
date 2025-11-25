@@ -194,16 +194,18 @@ Built a dedicated viewer experience for guests (family members) to read trip blo
 
 3. **Six-Part Home Page Structure**:
    - **Part 1 - Trip Selector**: Dropdown menu for multiple trips, plain title for single trip
-   - **Part 2 - Day Navigator**: Sliding window of 5 days with navigation arrows (⏮ ◀ ▶ ⏭), all days shown as "Day N" format
+   - **Part 2 - Day Navigator**: Sliding window of 5 days with navigation arrows, all days shown as "Day N" format (hidden when only 1 day)
    - **Part 3 - Day Date**: Centered display of current day's full date (e.g., "Monday September 23") in blue bold text
    - **Part 4 - Day Title**: Centered h3 heading showing the current day's title
    - **Part 5 - Day Content**: Rendered markdown from selected day's notes
    - **Part 6 - Admin Link**: "Sign In" for guests, "Admin" for logged-in users
 
 4. **Smart Navigation**:
-   - Arrows appear only when >5 ready days
+   - Navigator section hidden when only 1 ready day
+   - Next/previous arrows (◀ ▶) shown when 2+ days for navigation affordance (helps non-technical users discover the interface)
+   - First/last arrows (⏮ ⏭) shown only when >5 days (when some days are hidden)
    - Current day shown as highlighted "Day N" in navigator, others as day links
-   - Double arrows (⏮/⏭) jump to first/last day, single arrows (◀/▶) move one day
+   - Double arrows jump to first/last day, single arrows move one day
 
 5. **Session Memory**:
    - Tracks last viewed day per trip
@@ -215,9 +217,10 @@ Built a dedicated viewer experience for guests (family members) to read trip blo
    - In-progress trip (today within dates) → latest ready day
    - Otherwise → first ready day of latest trip
 
-7. **Feature Specs** (13 tests):
+7. **Feature Specs** (15 tests):
    - No ready trips, one trip, multiple trips scenarios
-   - Day navigator visibility and arrow behavior
+   - Day navigator visibility (hidden with 1 day, shown with 2+ days)
+   - Arrow behavior (next/previous with 2+ days, first/last with 6+ days)
    - Draft day filtering
    - Guest vs logged-in user admin link
 

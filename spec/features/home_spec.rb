@@ -76,6 +76,20 @@ describe "Home", js: true do
       expect(page).not_to have_css(".day-navigator")
     end
 
+    it "shows next/previous arrows with 2 days for affordance" do
+      create(:day, trip: trip, draft: false, date: Date.new(2025, 5, 1))
+      create(:day, trip: trip, draft: false, date: Date.new(2025, 5, 2))
+
+      visit root_path
+
+      # Next/previous arrows provide navigation affordance
+      expect(page).to have_content(t("symbol.previous"))
+      expect(page).to have_content(t("symbol.next"))
+      # First/last arrows not needed when all days visible
+      expect(page).not_to have_content(t("symbol.first"))
+      expect(page).not_to have_content(t("symbol.last"))
+    end
+
     it "shows only non-draft days" do
       create(:day, trip: trip, draft: false, date: Date.new(2025, 5, 1), title: "Day One")
       create(:day, trip: trip, draft: true, date: Date.new(2025, 5, 2), title: "Draft Day")
@@ -93,24 +107,33 @@ describe "Home", js: true do
       expect(page).not_to have_text(/D2|Day 2/)
     end
 
-    it "hides arrows when 5 or fewer days" do
+    it "shows next/previous but hides first/last arrows when 5 or fewer days" do
       (1..5).each do |i|
         create(:day, trip: trip, draft: false, date: Date.new(2025, 5, i))
       end
 
       visit root_path
 
-      expect(page).not_to have_css(".nav-arrow")
+      # Next/previous arrows should be visible
+      expect(page).to have_content(t("symbol.previous"))
+      expect(page).to have_content(t("symbol.next"))
+      # First/last arrows should not be visible
+      expect(page).not_to have_content(t("symbol.first"))
+      expect(page).not_to have_content(t("symbol.last"))
     end
 
-    it "shows arrows when more than 5 days" do
+    it "shows all four arrow types when more than 5 days" do
       (1..7).each do |i|
         create(:day, trip: trip, draft: false, date: Date.new(2025, 5, i))
       end
 
       visit root_path
 
-      expect(page).to have_css(".nav-arrow")
+      # All four arrow types should be visible
+      expect(page).to have_content(t("symbol.first"))
+      expect(page).to have_content(t("symbol.previous"))
+      expect(page).to have_content(t("symbol.next"))
+      expect(page).to have_content(t("symbol.last"))
     end
 
     it "clicking day link changes content" do
