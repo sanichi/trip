@@ -28,9 +28,13 @@
     .day-links.d-inline
       - day_window(@days, @day).each do |day|
         - if day == @day
-          %span.current-day= day_label(day)
+          %span.current-day
+            %span.d-md-none= day_label(day, long: false)
+            %span.d-none.d-md-inline= day_label(day)
         - else
-          = link_to day_label(day), root_path(day: day.id), class: "day-link"
+          = link_to root_path(day: day.id), class: "day-link" do
+            %span.d-md-none= day_label(day, long: false)
+            %span.d-none.d-md-inline= day_label(day)
 
     - if show_nav_arrows?(@days)
       - if at_last_day?(@days, @day)

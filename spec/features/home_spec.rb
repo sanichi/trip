@@ -71,15 +71,18 @@ describe "Home", js: true do
     it "shows only non-draft days" do
       create(:day, trip: trip, draft: false, date: Date.new(2025, 5, 1), title: "Day One")
       create(:day, trip: trip, draft: true, date: Date.new(2025, 5, 2), title: "Draft Day")
-      create(:day, trip: trip, draft: false, date: Date.new(2025, 5, 3), title: "Day Three")
+      day3 = create(:day, trip: trip, draft: false, date: Date.new(2025, 5, 3), title: "Day Three")
 
       visit root_path
 
       # Day 1 is current (shown as date, not link), Day 3 is a link
       # Day 2 (draft) should not appear at all
-      expect(page).to have_link("Day 3")
-      expect(page).not_to have_link("Day 2")
-      expect(page).not_to have_content("Day 2")
+      expect(page).to have_link(class: "day-link", href: root_path(day: day3.id))
+      # Both responsive forms are present in DOM (short form hidden on desktop, long form hidden on mobile)
+      expect(page).to have_selector(".day-link span.d-md-none", text: "D3", visible: :all)
+      expect(page).to have_selector(".day-link span.d-none.d-md-inline", text: "Day 3", visible: :all)
+      # Day 2 should not appear in any form
+      expect(page).not_to have_text(/D2|Day 2/)
     end
 
     it "hides arrows when 5 or fewer days" do
@@ -110,7 +113,7 @@ describe "Home", js: true do
 
       expect(page).to have_content("First day content")
 
-      click_link "Day 2"
+      find("a.day-link[href='#{root_path(day: day2.id)}']").click
 
       expect(page).to have_content("Second day content")
     end
