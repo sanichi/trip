@@ -68,6 +68,14 @@ describe "Home", js: true do
   context "day navigator" do
     let!(:trip) { create(:trip, user: admin, start_date: Date.new(2025, 5, 1), end_date: Date.new(2025, 5, 20)) }
 
+    it "hides navigator when only one ready day" do
+      create(:day, trip: trip, draft: false, date: Date.new(2025, 5, 1))
+
+      visit root_path
+
+      expect(page).not_to have_css(".day-navigator")
+    end
+
     it "shows only non-draft days" do
       create(:day, trip: trip, draft: false, date: Date.new(2025, 5, 1), title: "Day One")
       create(:day, trip: trip, draft: true, date: Date.new(2025, 5, 2), title: "Draft Day")

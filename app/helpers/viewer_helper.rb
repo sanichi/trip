@@ -24,6 +24,10 @@ module ViewerHelper
     days[start_index..end_index]
   end
 
+  def show_day_navigator?(days)
+    days.size > 1
+  end
+
   def show_nav_arrows?(days)
     days.size > WINDOW_SIZE
   end
