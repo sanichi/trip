@@ -22,7 +22,7 @@
             %tbody
               - @trip.days.each do |day|
                 %tr
-                  %td.text-center= link_to day.day_label, trip_day_path(@trip, day)
+                  %td.text-center= link_to day_label(day), trip_day_path(@trip, day)
                   %td.text-center= day_date(day)
                   %td= truncate(day.title, length: 40)
                   %td.text-center= render "days/draft_badge", day: day

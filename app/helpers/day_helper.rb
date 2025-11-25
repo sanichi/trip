@@ -1,4 +1,12 @@
 module DayHelper
+  def day_label(day, long: true)
+    if long
+      t('day.label', sequence: day.sequence)
+    else
+      t('day.short.label', sequence: day.sequence)
+    end
+  end
+
   def day_date(day, long: false)
     if long
       day.date.strftime("%A %B %-d")

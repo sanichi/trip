@@ -7,20 +7,20 @@
       - if (prev_day = day_previous(@day))
         = link_to trip_day_path(@trip, prev_day), class: "float-start small fw-normal" do
           = t('symbol.previous')
-          = prev_day.day_label
+          = day_label(prev_day)
       - else
         %span.float-start.small.fw-normal.invisible
           = t('symbol.previous')
           Day 1
       - if (next_day = day_next(@day))
         = link_to trip_day_path(@trip, next_day), class: "float-end small fw-normal" do
-          = next_day.day_label
+          = day_label(next_day)
           = t('symbol.next')
       - else
         %span.float-end.small.fw-normal.invisible
           Day 1
           = t('symbol.next')
-      = @day.day_label
+      = day_label(@day)
       = day_date(@day)
       = day_ready_badge(@day)
   .body

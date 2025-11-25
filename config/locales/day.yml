@@ -5,7 +5,10 @@ en:
     days: Days
     draft: Draft
     edit: Edit Day
+    label: "Day %{sequence}"
     new: New Day
     notes: Notes
     ready: Ready
+    short:
+      label: "D%{sequence}"
     title: Title

@@ -56,7 +56,7 @@ This Rails 8 application is being transformed from a simple notes template into 
 ### Helpers
 - **ApplicationHelper**: General utilities (pagination_links, center, col, home_page)
 - **TripHelper**: Trip duration formatting, available slot detection
-- **DayHelper**: Day date formatting with `day_date(day, long: false)` ("Mon May 11" or "Monday September 23"), ready badge, previous/next day navigation
+- **DayHelper**: Day date formatting with `day_date(day, long: false)` ("Mon May 11" or "Monday September 23"), day label formatting with `day_label(day, long: true)` ("Day 1" or "D1" for short form), ready badge, previous/next day navigation
 - **ImageHelper**: Specialized formatters for consistent display:
   - `image_coordinates(lat, lon, decimals=4)`: Formats GPS as "N 57.1234 W 6.3847" with cardinal directions
   - `image_taken(taken, include_time=true)`: Formats dates as "17:31 Oct 5, 2025" or "Oct 5, 2025"
@@ -73,6 +73,7 @@ This Rails 8 application is being transformed from a simple notes template into 
 - Feature specs with Capybara (JavaScript enabled)
 - FactoryBot for test data
 - Database Cleaner for test isolation
+- Helper modules included in feature specs via `config.include DayHelper, type: :feature` in rails_helper.rb (avoids code duplication)
 
 ## Code Analysis & Issues to Fix
 
@@ -330,6 +331,7 @@ Added ability to toggle a day's draft status directly from the trip show page wi
 ### Phase 7: Polish
 - [x] Remove Note model and related code
 - [x] Add production deployment configuration
+- [x] Refactor day_label from model to helper with short form support (day_label(day, long: true/false) → "Day 1"/"D1")
 - [ ] Performance optimization
 - [ ] SEO metadata for public trip pages
 - [ ] Mobile responsive design verification

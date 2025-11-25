@@ -63,7 +63,7 @@ describe Day, js: true do
 
     context "edit" do
       it "title" do
-        click_link day.day_label
+        click_link day_label(day)
         click_link t("edit")
 
         expect(page).to have_title t("day.edit")
@@ -78,7 +78,7 @@ describe Day, js: true do
       end
 
       it "draft" do
-        click_link day.day_label
+        click_link day_label(day)
         click_link t("edit")
 
         expect(page).to have_title t("day.edit")
@@ -98,13 +98,13 @@ describe Day, js: true do
         expect(day.draft).to eq false
 
         # Should see a button (clickable badge)
-        within("tr", text: day.day_label) do
+        within("tr", text: day_label(day)) do
           expect(page).to have_css("button")
           click_button t("symbol.tick")
         end
 
         # Badge should change to draft (cross)
-        within("tr", text: day.day_label) do
+        within("tr", text: day_label(day)) do
           expect(page).to have_content t("symbol.cross")
         end
 
@@ -112,11 +112,11 @@ describe Day, js: true do
         expect(day.reload.draft).to eq true
 
         # Toggle back
-        within("tr", text: day.day_label) do
+        within("tr", text: day_label(day)) do
           click_button t("symbol.cross")
         end
 
-        within("tr", text: day.day_label) do
+        within("tr", text: day_label(day)) do
           expect(page).to have_content t("symbol.tick")
         end
 
@@ -177,7 +177,7 @@ describe Day, js: true do
 
     it "view" do
       click_link trip.title
-      click_link day.day_label
+      click_link day_label(day)
       expect(page).to have_title day.title
     end
 
@@ -201,7 +201,7 @@ describe Day, js: true do
 
     it "edit own day" do
       click_link user_trip.title
-      click_link user_day.day_label
+      click_link day_label(user_day)
       click_link t("edit")
 
       expect(page).to have_title t("day.edit")
@@ -223,12 +223,12 @@ describe Day, js: true do
       it "can toggle own day's draft status" do
         click_link user_trip.title
 
-        within("tr", text: user_day.day_label) do
+        within("tr", text: day_label(user_day)) do
           expect(page).to have_css("button")
           click_button t("symbol.cross")
         end
 
-        within("tr", text: user_day.day_label) do
+        within("tr", text: day_label(user_day)) do
           expect(page).to have_content t("symbol.tick")
         end
 
@@ -239,7 +239,7 @@ describe Day, js: true do
         click_link trip.title
 
         # Should see badge but not as a button
-        within("tr", text: day.day_label) do
+        within("tr", text: day_label(day)) do
           expect(page).not_to have_css("button")
           expect(page).to have_content t("symbol.tick")
         end

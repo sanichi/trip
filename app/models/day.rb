@@ -17,7 +17,6 @@ class Day < ApplicationRecord
   def html(guest: true)
     to_html(notes, guest: guest)
   end
-  def day_label = "Day #{sequence}"
 
   def sequence
     return nil unless trip && date
