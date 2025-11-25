@@ -115,8 +115,10 @@ body.viewer
         @extend .mx-2, .text-secondary
       .current-day
         @extend .mx-2, .fw-bold, .text-primary
-        .day-date
-          @extend .ms-1
+
+  .day-date
+    .current-day
+      @extend .fw-bold, .text-primary
 
   .day-content
     .content

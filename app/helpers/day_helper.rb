@@ -1,6 +1,10 @@
 module DayHelper
-  def day_date(day)
-    day.date.strftime("%a %b %-d")
+  def day_date(day, long: false)
+    if long
+      day.date.strftime("%A %B %-d")
+    else
+      day.date.strftime("%a %b %-d")
+    end
   end
 
   def day_ready_badge(day)

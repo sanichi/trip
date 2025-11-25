@@ -56,7 +56,7 @@ This Rails 8 application is being transformed from a simple notes template into 
 ### Helpers
 - **ApplicationHelper**: General utilities (pagination_links, center, col, home_page)
 - **TripHelper**: Trip duration formatting, available slot detection
-- **DayHelper**: Day date formatting, ready badge, previous/next day navigation
+- **DayHelper**: Day date formatting with `day_date(day, long: false)` ("Mon May 11" or "Monday September 23"), ready badge, previous/next day navigation
 - **ImageHelper**: Specialized formatters for consistent display:
   - `image_coordinates(lat, lon, decimals=4)`: Formats GPS as "N 57.1234 W 6.3847" with cardinal directions
   - `image_taken(taken, include_time=true)`: Formats dates as "17:31 Oct 5, 2025" or "Oct 5, 2025"
@@ -191,16 +191,17 @@ Built a dedicated viewer experience for guests (family members) to read trip blo
    - Clean, minimal layout without admin navigation
    - Always used for home page regardless of login status
 
-3. **Five-Part Home Page Structure**:
+3. **Six-Part Home Page Structure**:
    - **Part 1 - Trip Selector**: Dropdown menu for multiple trips, plain title for single trip
-   - **Part 2 - Day Navigator**: Sliding window of 5 days with navigation arrows (⏮ ◀ ▶ ⏭)
-   - **Part 3 - Day Title**: Centered h3 heading showing the current day's title
-   - **Part 4 - Day Content**: Rendered markdown from selected day's notes
-   - **Part 5 - Admin Link**: "Sign In" for guests, "Admin" for logged-in users
+   - **Part 2 - Day Navigator**: Sliding window of 5 days with navigation arrows (⏮ ◀ ▶ ⏭), all days shown as "Day N" format
+   - **Part 3 - Day Date**: Centered display of current day's full date (e.g., "Monday September 23") in blue bold text
+   - **Part 4 - Day Title**: Centered h3 heading showing the current day's title
+   - **Part 5 - Day Content**: Rendered markdown from selected day's notes
+   - **Part 6 - Admin Link**: "Sign In" for guests, "Admin" for logged-in users
 
 4. **Smart Navigation**:
    - Arrows appear only when >5 ready days
-   - Current day shown as highlighted date (e.g., "Mon May 5"), others as day links
+   - Current day shown as highlighted "Day N" in navigator, others as day links
    - Double arrows (⏮/⏭) jump to first/last day, single arrows (◀/▶) move one day
 
 5. **Session Memory**:
