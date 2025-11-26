@@ -345,9 +345,9 @@ Implemented responsive day labels to handle narrow mobile screens where "Day 1" 
 - [x] Remove Note model and related code
 - [x] Add production deployment configuration
 - [x] Refactor day_label from model to helper with short form support (day_label(day, long: true/false) → "Day 1"/"D1")
-- [ ] Performance optimization
-- [ ] SEO metadata for public trip pages
-- [ ] Mobile responsive design verification
+- [x] Performance optimization
+- [x] SEO metadata for public trip pages
+- [x] Mobile responsive design verification
 
 ## Tech Stack
 - Ruby 3.x
