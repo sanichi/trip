@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This Rails 8 application is being transformed from a simple notes template into a travel blog platform. The primary use case is to document a Japan trip in May 2025, allowing relatives (especially aged parents) to follow the journey in real-time.
+This Rails 8 application is a travel blog platform. The primary use case is to document a Japan trip in May 2026, allowing relatives (especially aged parents) to follow the journey in real-time.
 
 ## Core Features
 
@@ -17,9 +17,9 @@ This Rails 8 application is being transformed from a simple notes template into 
 - **Users** (logged in): Can create trips and days, edit/delete their own content (days inherit trip ownership via association traversal)
 - **Admin**: Can do anything, including creating new users and managing all content
 
-### Future Features
+### Other Features
 - **Image Embedding**: Ability to insert uploaded images into day notes via markdown
-- **Video Upload**: Active Storage support for video files
+- **Video Embedding**: Support for embedding YouTube videos
 - **Rich Markdown**: Enhanced markdown features building on existing Redcarpet implementation
 
 ## Current Template Structure
@@ -29,14 +29,13 @@ This Rails 8 application is being transformed from a simple notes template into 
 - `Trip`: Journey with title, start_date, end_date. Validates date ranges and prevents date changes that would orphan days
 - `Day`: Individual day entries with date, title (max 50 chars), notes (text), draft boolean. Nested resource under Trip. Validates date falls within trip range and unique per trip.
 - `Image`: Photo uploads with Active Storage. Automatic processing (resize, compress), EXIF extraction (GPS, date taken). Belongs to user. Supports JPEG, PNG, WebP only.
-- `Note`: Example model showing patterns to follow (will be removed later)
 - `Guest`: Null object pattern for unauthenticated users
 - `Ability`: CanCan authorization rules
 
 ### Concerns (Reusable Patterns)
 - `Constrainable`: Search query building (numerical and cross-column text search)
 - `Pageable`: Pagination with search parameter preservation
-- `Remarkable`: Markdown rendering with Redcarpet, custom image handling
+- `Remarkable`: Markdown rendering with Redcarpet, custom image and video handling
 
 ### Controllers
 - Standard CRUD pattern with CanCan authorization
@@ -104,18 +103,18 @@ This Rails 8 application is being transformed from a simple notes template into 
    - Default scopes for consistent ordering
    - Helpers for common UI patterns (center, col, pagination_links)
    - Comprehensive feature tests with clear contexts
+   - The `Remarkable` custom image and video syntax has been documented for users in `app/views/pages/help.html.haml`
 
 10. **Documentation Needed**:
     - The `Constrainable` concern has complex regex logic that would benefit from comments
-    - The `Remarkable` custom image syntax needs documentation for users
 
 ### Recommendations
 
-11. **Active Storage**: Not yet configured. Will need to run `rails active_storage:install` and add configuration for local storage.
+11. ~~**Active Storage**: Not yet configured. Will need to run `rails active_storage:install` and add configuration for local storage.~~
 
-12. **Markdown Preview**: Consider adding live preview for markdown editing (Stimulus controller).
+12. ~~**Image Upload UI**: Will need to design how users upload images and get the markdown syntax to embed them.~~
 
-13. **Image Upload UI**: Will need to design how users upload images and get the markdown syntax to embed them.
+13. **Markdown Preview**: Consider adding live preview for markdown editing (Stimulus controller).
 
 ## Recent Achievements
 
@@ -329,8 +328,7 @@ Implemented responsive day labels to handle narrow mobile screens where "Day 1" 
 - [x] Build Image views (index, show, new, edit, form partial)
 - [x] Create image factory and feature specs
 - [x] Verified Apple auto-converts HEIC→JPEG preserving GPS/date
-- [ ] Add image embedding to day notes (Remarkable concern updates)
-- [ ] Link images to specific days/trips
+- [x] Add image embedding to day notes (Remarkable concern updates)
 
 ### Phase 6: Home Page (Viewer)
 - [x] Add `ready?` method and `scope :ready` to Trip model
