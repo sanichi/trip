@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/sanichi/sni
-  revision: 393e83a6addca0fcd0f6a273687ffa16f1edc598
+  revision: 3528d04c09721cc127876d4d9bf303f7a8ef31b8
   specs:
-    sni (0.10.1)
+    sni (0.10.2)
 
 GEM
   remote: https://rubygems.org/
@@ -92,7 +92,8 @@ GEM
     bootstrap (5.3.8)
       popper_js (>= 2.11.8, < 3)
     builder (3.3.0)
-    byebug (12.0.0)
+    byebug (13.0.0)
+      reline (>= 0.6.0)
     cancancan (3.6.1)
     capistrano (3.20.0)
       airbrussh (>= 1.0.0)
@@ -169,7 +170,8 @@ GEM
       addressable (~> 2.8)
       childprocess (~> 5.0)
       logger (~> 1.6)
-    listen (3.9.0)
+    listen (3.10.0)
+      logger
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     logger (1.7.0)
@@ -311,7 +313,7 @@ GEM
       sprockets-rails
       tilt
     securerandom (0.4.1)
-    selenium-webdriver (4.39.0)
+    selenium-webdriver (4.40.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -340,7 +342,7 @@ GEM
     tilt (2.7.0)
     timeout (0.6.0)
     tsort (0.2.0)
-    turbo-rails (2.0.20)
+    turbo-rails (2.0.21)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
     tzinfo (2.0.6)
@@ -358,6 +360,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-24
+  arm64-darwin-25
   x86_64-linux
 
 DEPENDENCIES
@@ -366,8 +369,10 @@ DEPENDENCIES
   bootstrap (~> 5.0)
   byebug
   cancancan (~> 3.0)
+  capistrano (~> 3.20)
+  capistrano-bundler (~> 2.2)
   capistrano-passenger (~> 0.2)
-  capistrano-rails (~> 1.4)
+  capistrano-rails (~> 1.7)
   capybara (~> 3.28)
   database_cleaner-active_record (~> 2.0)
   factory_bot_rails (~> 6.0)
@@ -394,4 +399,4 @@ DEPENDENCIES
   turbo-rails (~> 2.0)
 
 BUNDLED WITH
-   2.7.0
+  4.0.4

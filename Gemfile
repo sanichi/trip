@@ -35,8 +35,10 @@ end
 
 group :development do
   gem 'puma', '< 8'
-  gem 'capistrano-rails', '~> 1.4', require: false
+  gem 'capistrano', '~> 3.20', require: false
+  gem 'capistrano-bundler', '~> 2.2', require: false
   gem 'capistrano-passenger', '~> 0.2', require: false
+  gem 'capistrano-rails', '~> 1.7', require: false
   gem 'listen', '~> 3.2'
   gem 'awesome_print', '~> 1.9', require: false
 end

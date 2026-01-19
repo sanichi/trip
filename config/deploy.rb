@@ -5,6 +5,7 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/syst
 set :log_level, :info
 set :branch, "main"
 set :ssh_options, { forward_agent: true }
+set :bundle_version, 4
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
