@@ -1,0 +1,6 @@
+= turbo_frame_tag dom_id(trip, :draft) do
+  - if can?(:update, trip)
+    = button_to toggle_draft_trip_path(trip), method: :patch, class: "btn btn-sm p-0 border-0", data: { turbo_frame: dom_id(trip, :draft) } do
+      = trip_ready_badge(trip)
+  - else
+    = trip_ready_badge(trip)

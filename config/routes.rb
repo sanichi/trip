@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :images
   resources :trips do
+    patch :toggle_draft, on: :member
     resources :days, except: [:index] do
       patch :toggle_draft, on: :member
     end

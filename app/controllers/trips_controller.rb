@@ -29,6 +29,13 @@ class TripsController < ApplicationController
     redirect_to trips_path
   end
 
+  def toggle_draft
+    @trip.update!(draft: !@trip.draft)
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
   private
 
   def resource_params

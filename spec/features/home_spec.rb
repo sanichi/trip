@@ -180,12 +180,12 @@ describe "Home", js: true do
       expect(page).to have_content("Welcome to our trip!")
     end
 
-    it "shows trip title when on intro even without notes" do
+    it "shows Introduction heading when on intro even without notes" do
       trip.update!(notes: nil)
 
       visit root_path
 
-      expect(page).to have_css(".day-title h3", text: trip.title)
+      expect(page).to have_css(".day-title h3", text: t("trip.introduction"))
     end
 
     it "remembers intro selection in session" do

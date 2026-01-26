@@ -2,3 +2,4 @@
   %td= link_to trip.title, trip
   %td= trip_duration(trip)
   %td= trip.user.name
+  %td.text-center= render "trips/draft_badge", trip: trip
