@@ -2,6 +2,8 @@
   inputs = [
     [:title,      t("trip.title"),      :text, maxlength: Trip::MAX_TITLE],
     [:start_date, t("trip.start_date"), :text],
-    [:end_date,   t("trip.end_date"),   :text]
+    [:end_date,   t("trip.end_date"),   :text],
+    [:notes,      t("trip.notes"),      :area, rows: 20],
+    [:draft,      t("trip.draft"),      :check]
   ]
 = render "utils/crud/form", object: trip, index: trips_path, inputs: inputs, title: title

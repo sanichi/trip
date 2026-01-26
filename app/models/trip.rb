@@ -1,11 +1,13 @@
 class Trip < ApplicationRecord
+  include Remarkable
+
   MAX_TITLE = 50
   MAX_DAYS = 90
 
   belongs_to :user, inverse_of: :trips
   has_many :days, inverse_of: :trip, dependent: :destroy
 
-  scope :ready, -> { joins(:days).where(days: { draft: false }).distinct }
+  scope :ready, -> { where(draft: false) }
 
   before_validation :normalize_attributes
 
@@ -19,7 +21,11 @@ class Trip < ApplicationRecord
   default_scope { order(created_at: :desc) }
 
   def ready?
-    days.exists?(draft: false)
+    !draft
+  end
+
+  def html(guest: true)
+    to_html(notes, guest: guest)
   end
 
   private

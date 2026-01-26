@@ -7,7 +7,9 @@
     %h3.d-inline= @trip.title
     - if show_new_day_link
       .float-end.mt-1= link_to t("day.new"), new_trip_day_path(@trip), class: "btn btn-primary btn-sm"
-    %h5.text-muted= trip_duration(@trip)
+    %h5.text-muted
+      = trip_duration(@trip)
+      = trip_ready_badge(@trip)
   .body
     - if @trip.days.any?
       .row
@@ -28,6 +30,9 @@
                   %td.text-center= render "days/draft_badge", day: day
     - elsif can?(:create, Day)
       %p.text-muted No days yet.
+  - if @trip.notes.present?
+    .body.border-top.pt-3
+      = @trip.html(guest: false)
   .footer
     - if can?(:edit, @trip)
       = link_to t("edit"), edit_trip_path(@trip), class: "btn btn-primary btn-sm"

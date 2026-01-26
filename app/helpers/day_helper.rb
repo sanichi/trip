@@ -16,11 +16,12 @@ module DayHelper
   end
 
   def day_ready_badge(day)
-    if day.draft
-      content_tag(:span, t('symbol.cross'), class: "badge bg-warning text-dark")
+    badge = if day.draft
+      content_tag(:span, t('symbol.cross'), class: "badge bg-warning text-dark align-text-top")
     else
-      content_tag(:span, t('symbol.tick'), class: "badge bg-success")
+      content_tag(:span, t('symbol.tick'), class: "badge bg-success align-text-top")
     end
+    content_tag(:small, badge)
   end
 
   def day_previous(day)

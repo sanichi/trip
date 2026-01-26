@@ -32,6 +32,6 @@ class TripsController < ApplicationController
   private
 
   def resource_params
-    params.require(:trip).permit(:title, :start_date, :end_date)
+    params.require(:trip).permit(:title, :start_date, :end_date, :draft, :notes)
   end
 end

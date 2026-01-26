@@ -38,6 +38,31 @@ describe Trip, js: true do
         expect(Trip.count).to eq 1
         expect_error(page, "blank")
       end
+
+      it "creates trip as draft by default" do
+        click_link t("trip.new")
+        fill_in t("trip.title"), with: data.title
+        fill_in t("trip.start_date"), with: data.start_date
+        fill_in t("trip.end_date"), with: data.end_date
+        click_button t("save")
+
+        tr = Trip.first
+        expect(tr.draft).to be true
+      end
+
+      it "can create ready trip with notes" do
+        click_link t("trip.new")
+        fill_in t("trip.title"), with: data.title
+        fill_in t("trip.start_date"), with: data.start_date
+        fill_in t("trip.end_date"), with: data.end_date
+        fill_in t("trip.notes"), with: "Trip introduction"
+        uncheck t("trip.draft")
+        click_button t("save")
+
+        tr = Trip.first
+        expect(tr.draft).to be false
+        expect(tr.notes).to eq "Trip introduction"
+      end
     end
 
     context "edit" do
@@ -71,6 +96,41 @@ describe Trip, js: true do
         tr = Trip.find(trip.id)
         expect(tr.start_date).to eq data.start_date
         expect(tr.end_date).to eq data.end_date
+      end
+
+      it "notes and draft status" do
+        click_link trip.title
+        click_link t("edit")
+
+        fill_in t("trip.notes"), with: "Updated notes"
+        uncheck t("trip.draft")
+        click_button t("save")
+
+        tr = Trip.find(trip.id)
+        expect(tr.notes).to eq "Updated notes"
+        expect(tr.draft).to be false
+      end
+    end
+
+    context "show" do
+      it "displays draft indicator" do
+        click_link trip.title
+
+        expect(page).to have_css(".badge.bg-warning")
+      end
+
+      it "displays ready indicator when not draft" do
+        trip.update!(draft: false)
+        click_link trip.title
+
+        expect(page).to have_css(".badge.bg-success")
+      end
+
+      it "displays trip notes when present" do
+        trip.update!(notes: "Test trip notes content")
+        click_link trip.title
+
+        expect(page).to have_content("Test trip notes content")
       end
     end
   end

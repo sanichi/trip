@@ -15,57 +15,73 @@
             %li
               = link_to trip.title, root_path(trip: trip.id), class: "dropdown-item #{'active' if trip == @trip}"
 
-  /- Part 2: Day navigator (only shown when multiple days exist)
-  - if show_day_navigator?(@days)
+  /- Part 2: Day navigator (shown when multiple items to navigate)
+  :ruby
+    include_intro = @days.any?
+    items = navigator_items(@days, include_intro)
+    current = current_item(@day, @show_intro)
+  - if show_day_navigator?(@days, include_intro)
     .day-navigator.text-center.mb-4
-      /- First/last arrows (only when >5 days, meaning some are hidden)
-      - if show_nav_arrows?(@days)
-        - if at_first_day?(@days, @day)
+      /- First/last arrows (only when items > WINDOW_SIZE)
+      - if show_nav_arrows?(@days, include_intro)
+        - if at_first_position?(items, current)
           %span.nav-arrow.disabled= t("symbol.first")
         - else
-          = link_to t("symbol.first"), root_path(day: first_day(@days).id), class: "nav-arrow"
+          = link_to t("symbol.first"), first_position_path(items, @trip), class: "nav-arrow"
 
       /- Previous arrow (always shown in navigator)
-      - if at_first_day?(@days, @day)
+      - if at_first_position?(items, current)
         %span.nav-arrow.disabled= t("symbol.previous")
       - else
-        = link_to t("symbol.previous"), root_path(day: previous_day(@days, @day).id), class: "nav-arrow"
+        = link_to t("symbol.previous"), previous_position_path(items, current, @trip), class: "nav-arrow"
 
       .day-links.d-inline
-        - day_window(@days, @day).each do |day|
-          - if day == @day
+        - item_window(items, current).each do |item|
+          - if item == :intro
+            - if @show_intro
+              %span.current-day= t("trip.intro")
+            - else
+              = link_to t("trip.intro"), root_path(intro: true, trip: @trip.id), class: "day-link"
+          - elsif item == @day
             %span.current-day
-              %span.d-md-none= day_label(day, long: false)
-              %span.d-none.d-md-inline= day_label(day)
+              %span.d-md-none= day_label(item, long: false)
+              %span.d-none.d-md-inline= day_label(item)
           - else
-            = link_to root_path(day: day.id), class: "day-link" do
-              %span.d-md-none= day_label(day, long: false)
-              %span.d-none.d-md-inline= day_label(day)
+            = link_to root_path(day: item.id), class: "day-link" do
+              %span.d-md-none= day_label(item, long: false)
+              %span.d-none.d-md-inline= day_label(item)
 
       /- Next arrow (always shown in navigator)
-      - if at_last_day?(@days, @day)
+      - if at_last_position?(items, current)
         %span.nav-arrow.disabled= t("symbol.next")
       - else
-        = link_to t("symbol.next"), root_path(day: next_day(@days, @day).id), class: "nav-arrow"
+        = link_to t("symbol.next"), next_position_path(items, current), class: "nav-arrow"
 
-      /- Last arrow (only when >5 days, meaning some are hidden)
-      - if show_nav_arrows?(@days)
-        - if at_last_day?(@days, @day)
+      /- Last arrow (only when items > WINDOW_SIZE)
+      - if show_nav_arrows?(@days, include_intro)
+        - if at_last_position?(items, current)
           %span.nav-arrow.disabled= t("symbol.last")
         - else
-          = link_to t("symbol.last"), root_path(day: last_day(@days).id), class: "nav-arrow"
+          = link_to t("symbol.last"), last_position_path(items), class: "nav-arrow"
 
-  /- Part 3: Day date
-  .day-date.text-center.mb-4
-    %span.current-day= day_date(@day, long: true)
+  /- Part 3: Day date (hidden when on Intro)
+  - unless @show_intro
+    .day-date.text-center.mb-4
+      %span.current-day= day_date(@day, long: true)
 
-  /- Part 4: Day title
+  /- Part 4: Day/Intro title
   .day-title.text-center.mb-4
-    %h3= @day.title
+    - if @show_intro
+      %h3= t("trip.introduction")
+    - else
+      %h3= @day.title
 
-  /- Part 5: Day content
+  /- Part 5: Content (trip notes for intro, day notes for days)
   .day-content
-    - if @day.notes.present?
+    - if @show_intro
+      - if @trip.notes.present?
+        .content= @trip.html(guest: true)
+    - elsif @day&.notes.present?
       .content= @day.html(guest: true)
 
 /- Part 6: Admin link (always shown)

@@ -21,4 +21,13 @@ module TripHelper
     used_dates = trip.days.pluck(:date).to_set
     (trip.start_date..trip.end_date).find { |date| !used_dates.include?(date) }
   end
+
+  def trip_ready_badge(trip)
+    badge = if trip.draft
+      content_tag(:span, t('symbol.cross'), class: "badge bg-warning text-dark align-text-top")
+    else
+      content_tag(:span, t('symbol.tick'), class: "badge bg-success align-text-top")
+    end
+    content_tag(:small, badge)
+  end
 end

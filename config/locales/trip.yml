@@ -1,9 +1,13 @@
 en:
   trip:
     dates: Dates
+    draft: Draft
     edit: Edit Trip
     end_date: End Date
+    intro: Intro
+    introduction: Introduction
     new: New Trip
+    notes: Notes
     start_date: Start Date
     title: Title
     trip: Trip

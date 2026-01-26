@@ -13,9 +13,9 @@ describe "Home", js: true do
       expect(page).to have_link(t("session.sign_in"))
     end
 
-    it "shows blank page when trips exist but all days are drafts" do
-      trip = create(:trip, user: admin)
-      create(:day, trip: trip, draft: true, date: trip.start_date)
+    it "shows blank page when trip is draft even with ready days" do
+      trip = create(:trip, user: admin, draft: true)
+      create(:day, trip: trip, draft: false, date: trip.start_date)
 
       visit root_path
 
@@ -25,7 +25,7 @@ describe "Home", js: true do
   end
 
   context "one ready trip" do
-    let!(:trip) { create(:trip, user: admin, title: "Japan 2025") }
+    let!(:trip) { create(:trip, :ready, user: admin, title: "Japan 2025") }
     let!(:day1) { create(:day, trip: trip, draft: false, date: trip.start_date, title: "Arrival", notes: "Landed in Tokyo") }
 
     it "shows trip title without dropdown" do
@@ -43,8 +43,8 @@ describe "Home", js: true do
   end
 
   context "multiple ready trips" do
-    let!(:trip1) { create(:trip, user: admin, title: "Japan 2025", start_date: Date.new(2025, 5, 1), end_date: Date.new(2025, 5, 10)) }
-    let!(:trip2) { create(:trip, user: admin, title: "Italy 2024", start_date: Date.new(2024, 6, 1), end_date: Date.new(2024, 6, 10)) }
+    let!(:trip1) { create(:trip, :ready, user: admin, title: "Japan 2025", start_date: Date.new(2025, 5, 1), end_date: Date.new(2025, 5, 10)) }
+    let!(:trip2) { create(:trip, :ready, user: admin, title: "Italy 2024", start_date: Date.new(2024, 6, 1), end_date: Date.new(2024, 6, 10)) }
     let!(:day1) { create(:day, trip: trip1, draft: false, date: trip1.start_date) }
     let!(:day2) { create(:day, trip: trip2, draft: false, date: trip2.start_date) }
 
@@ -66,14 +66,15 @@ describe "Home", js: true do
   end
 
   context "day navigator" do
-    let!(:trip) { create(:trip, user: admin, start_date: Date.new(2025, 5, 1), end_date: Date.new(2025, 5, 20)) }
+    let!(:trip) { create(:trip, :ready, user: admin, start_date: Date.new(2025, 5, 1), end_date: Date.new(2025, 5, 20)) }
 
-    it "hides navigator when only one ready day" do
+    it "shows navigator with intro and one day" do
       create(:day, trip: trip, draft: false, date: Date.new(2025, 5, 1))
 
       visit root_path
 
-      expect(page).not_to have_css(".day-navigator")
+      expect(page).to have_css(".day-navigator")
+      expect(page).to have_link(t("trip.intro"))
     end
 
     it "shows next/previous arrows with 2 days for affordance" do
@@ -85,7 +86,7 @@ describe "Home", js: true do
       # Next/previous arrows provide navigation affordance
       expect(page).to have_content(t("symbol.previous"))
       expect(page).to have_content(t("symbol.next"))
-      # First/last arrows not needed when all days visible
+      # First/last arrows not needed when all items visible (intro + 2 days = 3 items)
       expect(page).not_to have_content(t("symbol.first"))
       expect(page).not_to have_content(t("symbol.last"))
     end
@@ -107,29 +108,28 @@ describe "Home", js: true do
       expect(page).not_to have_text(/D2|Day 2/)
     end
 
-    it "shows next/previous but hides first/last arrows when 5 or fewer days" do
-      (1..5).each do |i|
+    it "shows next/previous but hides first/last arrows when 5 or fewer items" do
+      (1..4).each do |i|
         create(:day, trip: trip, draft: false, date: Date.new(2025, 5, i))
       end
 
       visit root_path
 
-      # Next/previous arrows should be visible
+      # 4 days + intro = 5 items, all fit in window
       expect(page).to have_content(t("symbol.previous"))
       expect(page).to have_content(t("symbol.next"))
-      # First/last arrows should not be visible
       expect(page).not_to have_content(t("symbol.first"))
       expect(page).not_to have_content(t("symbol.last"))
     end
 
-    it "shows all four arrow types when more than 5 days" do
-      (1..7).each do |i|
+    it "shows all four arrow types when more than 5 items" do
+      (1..6).each do |i|
         create(:day, trip: trip, draft: false, date: Date.new(2025, 5, i))
       end
 
       visit root_path
 
-      # All four arrow types should be visible
+      # 6 days + intro = 7 items
       expect(page).to have_content(t("symbol.first"))
       expect(page).to have_content(t("symbol.previous"))
       expect(page).to have_content(t("symbol.next"))
@@ -150,8 +150,74 @@ describe "Home", js: true do
     end
   end
 
+  context "intro" do
+    let!(:trip) { create(:trip, :ready, user: admin, notes: "Welcome to our trip!") }
+
+    it "shows intro as first navigator item when trip has days" do
+      create(:day, trip: trip, draft: false, date: trip.start_date, title: "Day One")
+
+      visit root_path
+
+      expect(page).to have_css(".day-navigator")
+      expect(page).to have_link(t("trip.intro"))
+      expect(page).to have_css(".current-day", text: "Day 1")
+    end
+
+    it "shows intro content when selected" do
+      create(:day, trip: trip, draft: false, date: trip.start_date)
+
+      visit root_path(intro: true, trip: trip.id)
+
+      expect(page).to have_css(".current-day", text: t("trip.intro"))
+      expect(page).to have_content("Welcome to our trip!")
+      expect(page).not_to have_css(".day-date")
+    end
+
+    it "shows only intro when trip has no ready days" do
+      visit root_path
+
+      expect(page).not_to have_css(".day-navigator")
+      expect(page).to have_content("Welcome to our trip!")
+    end
+
+    it "shows trip title when on intro even without notes" do
+      trip.update!(notes: nil)
+
+      visit root_path
+
+      expect(page).to have_css(".day-title h3", text: trip.title)
+    end
+
+    it "remembers intro selection in session" do
+      create(:day, trip: trip, draft: false, date: trip.start_date)
+
+      visit root_path(intro: true, trip: trip.id)
+      visit root_path
+
+      expect(page).to have_css(".current-day", text: t("trip.intro"))
+    end
+
+    it "navigates from intro to first day" do
+      create(:day, trip: trip, draft: false, date: trip.start_date, notes: "First day content")
+
+      visit root_path(intro: true, trip: trip.id)
+      click_link t("symbol.next")
+
+      expect(page).to have_content("First day content")
+    end
+
+    it "navigates from first day back to intro" do
+      day = create(:day, trip: trip, draft: false, date: trip.start_date)
+
+      visit root_path(day: day.id)
+      click_link t("symbol.previous")
+
+      expect(page).to have_content("Welcome to our trip!")
+    end
+  end
+
   context "admin link" do
-    let!(:trip) { create(:trip, user: admin) }
+    let!(:trip) { create(:trip, :ready, user: admin) }
     let!(:day) { create(:day, trip: trip, draft: false, date: trip.start_date) }
 
     it "guest sees sign in link" do
