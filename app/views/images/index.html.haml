@@ -17,9 +17,9 @@
       %table.mt-4{class: "table table-bordered table-sm"}
         %thead
           %tr
-            %th{rowspan: 3, class: "text-center align-middle"}= t("image.image")
-            %th{colspan: 3, class: "text-center"}
-              = t("id")
+            %th.text-center.align-middle{rowspan: 3}= t("image.image")
+            %th{colspan: 3}
+              %span.badge.bg-dark.rounded-pill= t("id")
               = t("image.caption")
           %tr
             %th.text-center= t("image.dimensions")
@@ -36,8 +36,8 @@
                 = link_to image_path(image), "data-turbo-frame" => "_top" do
                   - if image.file.attached?
                     = image_tag url_for(image.thumbnail), alt: truncate(image.caption, length: Image::MAX_CAPTION_DISPLAY), style: "max-height: 100px;"
-              %td.text-center{colspan: 3, title: t("image.caption")}
-                = image.id
+              %td{colspan: 3, title: t("image.caption")}
+                %span.badge.bg-dark.rounded-pill= image.id
                 = truncate(image.caption, length: Image::MAX_CAPTION_DISPLAY)
             %tr
               %td.text-center= image.width && image.height ? "#{image.width}×#{image.height}" : "N/A"
