@@ -17,7 +17,7 @@
         - if can?(:env, :page)
           %li= link_to t("pages.env.title"), env_path
       %ul.ms-auto
-        - unless %/sessions otp_secrets/.include?(controller_name)
+        - unless controller_name.in?(%w[sessions otp_secrets])
           - if current_user.guest?
             %li= link_to t("session.sign_in"), new_session_path
           - else

@@ -32,8 +32,8 @@ class ApplicationController < ActionController::Base
 
   def track_admin_page
     return unless request.get?
-    return unless ADMIN_CONTROLLERS.include?(controller_name)
-    return unless %w[index show].include?(action_name)
+    return unless controller_name.in?(ADMIN_CONTROLLERS)
+    return unless action_name.in?(%w[index show])
 
     session[:last_admin_page] = request.fullpath
   end

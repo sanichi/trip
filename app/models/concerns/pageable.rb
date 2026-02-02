@@ -23,7 +23,7 @@ module Pageable
 
     def initialize(matches, params, path, per_page, page, count, extra)
       @matches  = matches
-      @params   = params.reject{ |key,val| %w[action controller button utf8].include?(key) }
+      @params   = params.reject{ |key,val| key.in?(%w[action controller button utf8]) }
       @path     = path
       @per_page = per_page
       @page     = page

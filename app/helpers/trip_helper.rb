@@ -19,7 +19,7 @@ module TripHelper
 
   def trip_first_available_slot(trip)
     used_dates = trip.days.pluck(:date).to_set
-    (trip.start_date..trip.end_date).find { |date| !used_dates.include?(date) }
+    (trip.start_date..trip.end_date).find { |date| !date.in?(used_dates) }
   end
 
   def trip_ready_badge(trip)

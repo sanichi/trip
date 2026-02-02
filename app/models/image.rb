@@ -75,9 +75,7 @@ class Image < ApplicationRecord
   end
 
   def file_type_allowed
-    allowed_types = %w[image/jpeg image/jpg image/png image/webp]
-
-    unless allowed_types.include?(file.content_type)
+    unless file.content_type.in?(%w[image/jpeg image/jpg image/png image/webp])
       if file.content_type == "image/gif"
         errors.add(:file, "GIF files are not supported")
       elsif file.content_type == "image/heic" || file.content_type == "image/heif"
