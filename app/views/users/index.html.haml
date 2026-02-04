@@ -1,10 +1,8 @@
 - set_meta_tags title: t("user.users")
 
 %section
-  .header{class: "#{can?(:create, User) ? '' : 'text-center'}"}
+  .header.text-center
     %h3.d-inline= t("user.users")
-    - if can?(:create, User)
-      .float-end.mt-1= link_to t("user.new"), new_user_path, class: "btn btn-primary btn-sm"
   .body
     .row
       %div{class: Sni::Center.call(xl: 6, lg: 8, md: 10, sm: 12)}
@@ -24,3 +22,6 @@
                 %td.text-center
                   = otp_required(user)
                   = otp_active(user)
+  .footer.text-center
+    - if can?(:create, User)
+      = link_to t("user.new"), new_user_path, class: "btn btn-primary btn-sm"

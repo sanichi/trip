@@ -7,10 +7,8 @@
   ]
 
 %section
-  .header{class: "#{can?(:create, Image) ? '' : 'text-center'}"}
+  .header.text-center
     %h3.d-inline= t("image.images")
-    - if can?(:create, Image)
-      .float-end.mt-1= link_to t("new"), new_image_path, class: "btn btn-primary btn-sm"
   .body
     = render "utils/search/form", index: images_path, inputs: inputs
     = turbo_frame_tag :results, "data-turbo-action" => "advance" do
@@ -48,3 +46,6 @@
               %td.text-center= image_taken(image.taken, false)
               %td.text-center= image.user.name
           = render "utils/pagination/links", pager: @images, columns: 4
+  .footer.text-center
+    - if can?(:create, Image)
+      = link_to t("new"), new_image_path, class: "btn btn-primary btn-sm"

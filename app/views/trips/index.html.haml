@@ -1,10 +1,8 @@
 - set_meta_tags title: t("trip.trips")
 
 %section
-  .header{class: "#{can?(:create, Trip) ? '' : 'text-center'}"}
+  .header.text-center
     %h3.d-inline= t("trip.trips")
-    - if can?(:create, Trip)
-      .float-end.mt-1= link_to t("trip.new"), new_trip_path, class: "btn btn-primary btn-sm"
   .body
     .row
       %div{class: Sni::Center.call(xl: 6, lg: 8, md: 10, sm: 12)}
@@ -17,3 +15,6 @@
               %th.text-center= t("day.ready")
           %tbody
             = render partial: "trip", collection: @trips
+  .footer.text-center
+    - if can?(:create, Trip)
+      = link_to t("trip.new"), new_trip_path, class: "btn btn-primary btn-sm"

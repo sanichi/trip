@@ -26,7 +26,7 @@
   .body
     - if @day.notes.present?
       .note= @day.html(guest: current_user.guest?)
-  .footer
+  .footer.text-center
     - if can?(:edit, @day)
       = link_to t("edit"), edit_trip_day_path(@trip, @day), class: "btn btn-primary btn-sm"
     = link_to @trip.title, trip_path(@trip), class: "btn btn-success btn-sm"

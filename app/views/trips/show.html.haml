@@ -1,12 +1,8 @@
 - set_meta_tags title: @trip.title
-:ruby
-  show_new_day_link = can?(:create, Day) && trip_first_available_slot(@trip).present?
 
 %section
-  .header{class: "#{show_new_day_link ? '' : 'text-center'}"}
+  .header.text-center
     %h3.d-inline= @trip.title
-    - if show_new_day_link
-      .float-end.mt-1= link_to t("day.new"), new_trip_day_path(@trip), class: "btn btn-primary btn-sm"
     %h5.text-muted
       = trip_duration(@trip)
       = trip_ready_badge(@trip)
@@ -33,7 +29,9 @@
   - if @trip.notes.present?
     .body.border-top.pt-3
       = @trip.html(guest: false)
-  .footer
+  .footer.text-center
     - if can?(:edit, @trip)
       = link_to t("edit"), edit_trip_path(@trip), class: "btn btn-primary btn-sm"
+    - if can?(:create, Day) && trip_first_available_slot(@trip).present?
+      = link_to t("day.new"), new_trip_day_path(@trip), class: "btn btn-primary btn-sm"
     = link_to t("trip.trips"), trips_path, class: "btn btn-success btn-sm"
