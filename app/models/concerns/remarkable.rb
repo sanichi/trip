@@ -73,7 +73,7 @@ module Remarkable
 
       # Build YouTube embed iframe
       embed_url = "https://www.youtube.com/embed/#{video_id}"
-      iframe = %Q(<div class="ratio ratio-16x9 border rounded"><iframe src="#{embed_url}" title="YouTube video player" allow="clipboard-write; picture-in-picture; web-share" allowfullscreen></iframe></div>)
+      iframe = %Q(<div class="ratio ratio-16x9 border rounded"><iframe src="#{embed_url}" title="YouTube video player" allow="accelerometer; gyroscope; clipboard-write; picture-in-picture; web-share" allowfullscreen></iframe></div>)
       caption_class = result[:center_caption] ? "figure-caption text-center px-2 pb-2" : "figure-caption px-2 pb-2"
 
       # Check if full width (xs: 12 only, which Bootstrap cascades upward)
