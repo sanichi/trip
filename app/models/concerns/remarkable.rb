@@ -6,19 +6,17 @@ module Remarkable
     end
 
     def link(link, title, alt_text)
-      if lnk_trg_txt = link_with_target(link, alt_text)
-        '<a href="%s" target="%s">%s</a>' % lnk_trg_txt
-      else
-        '<a href="%s">%s</a>' % [link, alt_text]
-      end
+      html = %Q(<a href="#{link}")
+      html += %Q( target="external") if link.match?(/\Ahttps?:\/\//)
+      html += %Q(>#{alt_text}</a>)
+      html
     end
 
     def autolink(link, link_type)
-      if lnk_trg_txt = link_with_target(link)
-        '<a href="%s" target="%s">%s</a>' % lnk_trg_txt
-      else
-        '<a href="%s">%s</a>' % [link, link]
-      end
+      html = %Q(<a href="#{link}")
+      html += %Q( target="external") if link.match?(/\Ahttps?:\/\//)
+      html += %Q(>#{link}</a>)
+      html
     end
 
     def image(link, title, alt)
@@ -102,14 +100,6 @@ module Remarkable
     def wrap_in_centered_div(content, breakpoints)
       center_class = Sni::Center.call(**breakpoints)
       %Q(<div class="#{center_class}">#{content}</div>)
-    end
-
-    def link_with_target(link, text=nil)
-      return unless link =~ /\A(.+)\|(\w*)\z/
-      link = $1
-      trgt = $2.blank?? "external" : $2
-      text = link if text.blank?
-      [link, trgt, text]
     end
 
     def error_or_nothing(message)
