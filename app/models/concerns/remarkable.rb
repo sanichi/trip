@@ -54,7 +54,7 @@ module Remarkable
       # Generate responsive image HTML
       if result[:show_caption]
         caption_class = result[:center_caption] ? "figure-caption text-center px-2 pb-2" : "figure-caption px-2 pb-2"
-        content = %Q(<figure class="figure w-100 border rounded text-center"><img src="#{image_url}" alt="#{alt_text}" class="img-fluid figure-img" width="#{image.width}" height="#{image.height}"><figcaption class="#{caption_class}">#{image.caption}</figcaption></figure>)
+        content = %Q(<figure class="figure w-100 border rounded text-center"><img src="#{image_url}" alt="#{alt_text}" class="img-fluid figure-img" width="#{image.width}" height="#{image.height}"><figcaption class="#{caption_class}">#{process_inline_links(image.caption)}</figcaption></figure>)
       else
         content = %Q(<img src="#{image_url}" alt="#{alt_text}" class="img-fluid border rounded d-block mx-auto" width="#{image.width}" height="#{image.height}">)
       end
@@ -79,7 +79,7 @@ module Remarkable
         # Full width - simple structure
         if alt.present? && result[:show_caption]
           # Wrap with caption if available and requested
-          %Q(<figure class="figure w-100">#{iframe}<figcaption class="#{caption_class}">#{alt}</figcaption></figure>)
+          %Q(<figure class="figure w-100">#{iframe}<figcaption class="#{caption_class}">#{process_inline_links(alt)}</figcaption></figure>)
         else
           iframe
         end
@@ -89,7 +89,7 @@ module Remarkable
 
         if result[:show_caption] && alt.present?
           # Put both video and caption inside the column wrapper
-          %Q(<div class="row"><div class="#{center_class}"><figure class="figure w-100">#{iframe}<figcaption class="#{caption_class}">#{alt}</figcaption></figure></div></div>)
+          %Q(<div class="row"><div class="#{center_class}"><figure class="figure w-100">#{iframe}<figcaption class="#{caption_class}">#{process_inline_links(alt)}</figcaption></figure></div></div>)
         else
           # Just video in column wrapper
           %Q(<div class="row"><div class="#{center_class}">#{iframe}</div></div>)
@@ -100,6 +100,18 @@ module Remarkable
     def wrap_in_centered_div(content, breakpoints)
       center_class = Sni::Center.call(**breakpoints)
       %Q(<div class="#{center_class}">#{content}</div>)
+    end
+
+    def process_inline_links(text)
+      return text if text.blank?
+      text.gsub(/\[([^\]]+)\]\(([^)]+)\)/) do
+        link_text = $1
+        url = $2
+        html = %Q(<a href="#{url}")
+        html += %Q( target="external") if url.match?(/\Ahttps?:\/\//)
+        html += %Q(>#{link_text}</a>)
+        html
+      end
     end
 
     def error_or_nothing(message)
