@@ -42,7 +42,7 @@ describe User, js: true do
 
       expect(page).to have_title t("title")
 
-      click_link t("session.sign_in")
+      click_link t("session.admin_sign_in")
       fill_in t("user.email"), with: data.email
       fill_in t("user.password"), with: data.password
       click_button t("session.sign_in")
@@ -74,7 +74,7 @@ describe User, js: true do
 
       expect(page).to have_title t("title")
 
-      click_link t("session.sign_in")
+      click_link t("session.admin_sign_in")
       fill_in t("user.email"), with: data.email
       fill_in t("user.password"), with: data.password
       click_button t("session.sign_in")
@@ -190,7 +190,7 @@ describe User, js: true do
     end
 
     it "can login" do
-      click_link t("session.sign_in")
+      click_link t("session.admin_sign_in")
 
       expect(page).to have_title t("session.sign_in")
     end

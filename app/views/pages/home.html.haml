@@ -88,6 +88,6 @@
 .admin-link.text-center.mt-5
   %small.text-muted
     - if current_user.guest?
-      = link_to t("session.sign_in"), new_session_path, class: "text-muted"
+      = link_to t("session.admin_sign_in"), new_session_path, class: "text-muted"
     - else
       = link_to t("user.admin"), admin_return_path, class: "text-muted"

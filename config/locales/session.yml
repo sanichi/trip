@@ -2,4 +2,5 @@ en:
   session:
     invalid: Unknown username/password combination
     sign_in: Sign In
+    admin_sign_in: Administrator's Sign In
     sign_out: Sign Out

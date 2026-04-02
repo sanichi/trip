@@ -10,7 +10,7 @@ describe "Home", js: true do
       expect(page).not_to have_css(".trip-selector")
       expect(page).not_to have_css(".day-navigator")
       expect(page).not_to have_css(".day-content")
-      expect(page).to have_link(t("session.sign_in"))
+      expect(page).to have_link(t("session.admin_sign_in"))
     end
 
     it "shows blank page when trip is draft even with ready days" do
@@ -223,7 +223,7 @@ describe "Home", js: true do
     it "guest sees sign in link" do
       visit root_path
 
-      expect(page).to have_link(t("session.sign_in"))
+      expect(page).to have_link(t("session.admin_sign_in"))
       expect(page).not_to have_link(t("user.admin"))
     end
 
@@ -232,7 +232,7 @@ describe "Home", js: true do
       visit root_path
 
       expect(page).to have_link(t("user.admin"))
-      expect(page).not_to have_link(t("session.sign_in"))
+      expect(page).not_to have_link(t("session.admin_sign_in"))
     end
 
     it "admin link returns to trips index" do
