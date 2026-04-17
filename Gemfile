@@ -34,7 +34,7 @@ group :test do
 end
 
 group :development do
-  gem 'puma', '< 8'
+  gem 'puma', '< 9'
   gem 'capistrano', '~> 3.20', require: false
   gem 'capistrano-bundler', '~> 2.2', require: false
   gem 'capistrano-passenger', '~> 0.2', require: false
