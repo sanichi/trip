@@ -35,10 +35,10 @@ describe "Home", js: true do
       expect(page).not_to have_css(".dropdown")
     end
 
-    it "shows day content" do
+    it "shows intro on first visit (no session)" do
       visit root_path
 
-      expect(page).to have_css(".day-content", text: "Landed in Tokyo")
+      expect(page).to have_css(".current-day", text: t("trip.intro"))
     end
   end
 
@@ -74,7 +74,7 @@ describe "Home", js: true do
       visit root_path
 
       expect(page).to have_css(".day-navigator")
-      expect(page).to have_link(t("trip.intro"))
+      expect(page).to have_css(".current-day", text: t("trip.intro"))
     end
 
     it "shows next/previous arrows with 2 days for affordance" do
@@ -142,10 +142,10 @@ describe "Home", js: true do
 
       visit root_path
 
+      find("a.day-link[href='#{root_path(day: day1.id)}']").click
       expect(page).to have_content("First day content")
 
       find("a.day-link[href='#{root_path(day: day2.id)}']").click
-
       expect(page).to have_content("Second day content")
     end
   end
@@ -153,14 +153,14 @@ describe "Home", js: true do
   context "intro" do
     let!(:trip) { create(:trip, :ready, user: admin, notes: "Welcome to our trip!") }
 
-    it "shows intro as first navigator item when trip has days" do
+    it "shows intro as first navigator item and defaults to intro on first visit" do
       create(:day, trip: trip, draft: false, date: trip.start_date, title: "Day One")
 
       visit root_path
 
       expect(page).to have_css(".day-navigator")
-      expect(page).to have_link(t("trip.intro"))
-      expect(page).to have_css(".current-day", text: "Day 1")
+      expect(page).to have_css(".current-day", text: t("trip.intro"))
+      expect(page).to have_css("a.day-link")
     end
 
     it "shows intro content when selected" do

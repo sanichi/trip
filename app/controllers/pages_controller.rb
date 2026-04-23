@@ -65,7 +65,8 @@ class PagesController < ApplicationController
       return session[:last_day_per_trip][@trip.id.to_s] == "intro"
     end
 
-    false
+    # No session for this trip → default to intro
+    true
   end
 
   def select_day
