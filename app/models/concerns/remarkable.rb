@@ -7,14 +7,14 @@ module Remarkable
 
     def link(link, title, alt_text)
       html = %Q(<a href="#{link}")
-      html += %Q( target="external") if link&.match?(/\Ahttps?:\/\//)
+      html += %Q( target="_blank") if link&.match?(/\Ahttps?:\/\//)
       html += %Q(>#{alt_text}</a>)
       html
     end
 
     def autolink(link, link_type)
       html = %Q(<a href="#{link}")
-      html += %Q( target="external") if link&.match?(/\Ahttps?:\/\//)
+      html += %Q( target="_blank") if link&.match?(/\Ahttps?:\/\//)
       html += %Q(>#{link}</a>)
       html
     end
@@ -108,7 +108,7 @@ module Remarkable
         link_text = $1
         url = $2
         html = %Q(<a href="#{url}")
-        html += %Q( target="external") if url.match?(/\Ahttps?:\/\//)
+        html += %Q( target="_blank") if url.match?(/\Ahttps?:\/\//)
         html += %Q(>#{link_text}</a>)
         html
       end
