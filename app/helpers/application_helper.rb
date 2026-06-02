@@ -22,14 +22,4 @@ module ApplicationHelper
       cols.to_s.gsub(/(\A| )((?:sm|md|lg|xl|xxl)-)?(\d)/){"#{$1}col-#{$2}#{$3}"}
     end
   end
-
-  def link_last_edited
-    return unless session[:last_edited]&.match(/\A(\d+),(\d+)\z/)
-    trip = Trip.find_by(id: $1.to_i)
-    return unless trip && can?(:read, trip)
-    day = $2.to_i == 0 ? nil : trip.days.find_by(id: $2.to_i)
-    path = day ? trip_day_path(trip, day) : trip_path(trip)
-    return if request.fullpath == path
-    content_tag(:li, link_to(t("day.last_edited"), path))
-  end
 end

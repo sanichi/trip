@@ -8,7 +8,7 @@
       %ul.me-auto
         - if can?(:index, Trip)
           %li= link_to t("trip.trips"), trips_path
-        = link_last_edited
+        = day_last_edited
         - if can?(:index, Image)
           %li= link_to t("image.images"), images_path
         - if can?(:index, User)
