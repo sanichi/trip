@@ -17,6 +17,7 @@ class DaysController < ApplicationController
 
   def create
     if @day.save
+      keep_last_edited(@day.trip.id, @day.id)
       redirect_to trip_day_path(@trip, @day)
     else
       failure @day
@@ -26,6 +27,7 @@ class DaysController < ApplicationController
 
   def update
     if @day.update(resource_params)
+      keep_last_edited(@day.trip.id, @day.id)
       redirect_to trip_day_path(@trip, @day)
     else
       failure @day

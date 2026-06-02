@@ -6,6 +6,7 @@ en:
     draft: Draft
     edit: Edit Day
     label: "Day %{sequence}"
+    last_edited: LED
     new: New Day
     notes: Notes
     ready: Ready

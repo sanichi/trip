@@ -8,6 +8,7 @@ class TripsController < ApplicationController
   def create
     @trip.user_id = current_user.id
     if @trip.save
+      keep_last_edited(@trip.id, 0)
       redirect_to @trip
     else
       failure @trip
@@ -17,6 +18,7 @@ class TripsController < ApplicationController
 
   def update
     if @trip.update(resource_params)
+      keep_last_edited(@trip.id, 0)
       redirect_to @trip
     else
       failure @trip

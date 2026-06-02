@@ -37,4 +37,6 @@ class ApplicationController < ActionController::Base
 
     session[:last_admin_page] = request.fullpath
   end
+
+  def keep_last_edited(trip, day) = session[:last_edited] = "#{trip},#{day}"
 end
