@@ -41,4 +41,5 @@ group :development do
   gem 'capistrano-rails', '~> 1.7', require: false
   gem 'listen', '~> 3.2'
   gem 'awesome_print', '~> 1.9', require: false
+  gem 'rails-erd'
 end
