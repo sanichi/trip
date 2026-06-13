@@ -7,6 +7,7 @@ with embedded images, and visitors can follow along without signing in.
 
 ```mermaid
 erDiagram
+	direction TB
 	Day {
 		date date
 		boolean draft
@@ -39,4 +40,3 @@ erDiagram
 	User ||--}o Image : ""
 	Trip ||--}o Day : ""
 ```
-<!-- vim: set ft=text: (disables treesitter to avoid nvim 0.12 crash on mermaid erDiagram) -->
