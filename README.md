@@ -40,3 +40,4 @@ erDiagram
 	User ||--}o Image : ""
 	Trip ||--}o Day : ""
 ```
+<!-- vim: set ft=text: (disables treesitter to avoid nvim 0.12 crash on mermaid erDiagram) -->
