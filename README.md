@@ -7,7 +7,6 @@ with embedded images, and visitors can follow along without signing in.
 
 ```mermaid
 erDiagram
-	direction TB
 	Day {
 		date date
 		boolean draft
