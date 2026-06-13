@@ -1,4 +1,3 @@
-<!-- vim: set ft=text: (disables treesitter to avoid nvim 0.12 crash on mermaid erDiagram) -->
 # Trip
 
 A Rails travel blog. Trips are made up of days, days are written in markdown
