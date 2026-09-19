@@ -85,7 +85,7 @@ GEM
       public_suffix (>= 2.0.2, < 8.0)
     airbrussh (1.6.2)
       sshkit (>= 1.6.1, != 1.7.0)
-    awesome_print (1.9.2)
+    amazing_print (3.0.0)
     base64 (0.3.0)
     bcrypt (3.1.22)
     bigdecimal (4.1.3)
@@ -160,7 +160,7 @@ GEM
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
-    io-console (0.9.3)
+    io-console (0.9.4)
     irb (1.18.0)
       pp (>= 0.6.0)
       prism (>= 1.3.0)
@@ -309,7 +309,7 @@ GEM
     ruby-vips (2.3.0)
       ffi (~> 1.12)
       logger
-    rubyzip (3.6.0)
+    rubyzip (3.7.0)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -370,7 +370,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  awesome_print (~> 1.9)
+  amazing_print (< 4)
   bcrypt (~> 3.1.7)
   bootstrap (~> 5.0)
   byebug
