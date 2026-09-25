@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '8.1.3.1'
-gem 'json', '~> 2.21' # Rails 8.1 is incompatible with json 3.x (ActiveSupport::JSON.decode passes options positionally)
+gem 'rails', '8.1.4'
 gem 'haml-rails', '< 4.0'
 gem 'sassc-rails', '~> 2.1'
 gem 'bootstrap', '~> 5.0'
