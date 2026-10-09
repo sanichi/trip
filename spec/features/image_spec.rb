@@ -14,7 +14,8 @@ describe Image, js: true do
 
     it "view images index" do
       expect(page).to have_title t("image.images")
-      expect(page).to have_content image.caption
+      # The index truncates long captions
+      expect(page).to have_content image.caption.truncate(Image::MAX_CAPTION_DISPLAY)
     end
 
     it "view image" do
