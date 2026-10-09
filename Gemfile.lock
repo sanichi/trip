@@ -53,6 +53,8 @@ GEM
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
+    active_record_doctor (2.1.0)
+      activerecord (>= 7.0.0)
     activejob (8.1.4)
       activesupport (= 8.1.4)
       globalid (>= 0.3.6)
@@ -370,6 +372,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  active_record_doctor
   amazing_print (< 4)
   bcrypt (~> 3.1.7)
   bootstrap (~> 5.0)

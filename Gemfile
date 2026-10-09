@@ -12,9 +12,9 @@ gem 'redcarpet', '~> 3.5'
 gem 'rotp', '~> 6.2'
 gem 'rqrcode', '~> 3.1'
 gem 'sprockets-rails', '~> 3.4'
-gem "importmap-rails", "~> 2.1"
-gem "turbo-rails", "~> 2.0"
-gem "stimulus-rails", "~> 1.3"
+gem 'importmap-rails', '~> 2.1'
+gem 'turbo-rails', '~> 2.0'
+gem 'stimulus-rails', '~> 1.3'
 gem 'sni', git: 'https://github.com/sanichi/sni'
 gem 'image_processing', '~> 2.0'
 gem 'ruby-vips', '~> 2.2'
@@ -26,7 +26,8 @@ group :development, :test do
   gem 'launchy', '< 4'
   gem 'factory_bot_rails', '~> 6.0'
   gem 'faker', '< 4'
-  gem "selenium-webdriver", "~> 4.28"
+  gem 'selenium-webdriver', '~> 4.28'
+  gem 'active_record_doctor'
 end
 
 group :test do
