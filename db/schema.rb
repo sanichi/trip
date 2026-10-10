@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_09_100000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_10_100000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -51,7 +51,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_100000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["trip_id", "date"], name: "index_days_on_trip_id_and_date", unique: true
-    t.index ["trip_id"], name: "index_days_on_trip_id"
   end
 
   create_table "images", force: :cascade do |t|
