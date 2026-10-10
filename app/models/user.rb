@@ -25,7 +25,8 @@ class User < ApplicationRecord
   private
 
   def normalize_attributes
-    email&.squish!&.downcase
+    email&.squish!
+    email&.downcase!
     name&.squish!
   end
 
