@@ -3,6 +3,7 @@ class User < ApplicationRecord
   MAX_NAME = 30
   MIN_PASSWORD = 8
   OTP_ISSUER = "trip.sanichi.me"
+  OTP_LENGTH = 32
 
   has_secure_password
 
@@ -13,6 +14,7 @@ class User < ApplicationRecord
   after_update :reset_otp
 
   validates :email, format: { with: /\A\S+@\S+\z/ }, length: { maximum: MAX_EMAIL }, uniqueness: { case_sensitive: false }
+  validates :otp_secret, length: { maximum: OTP_LENGTH }, allow_nil: true
   validates :name, length: { maximum: MAX_NAME }, presence: true, uniqueness: true
   validates :password, length: { minimum: MIN_PASSWORD }, allow_nil: true
 
