@@ -17,7 +17,7 @@ Rails.application.configure do
     policy.form_action     :self
     policy.report_uri      "https://hou.sanichi.me/reports"
   end
-  config.content_security_policy_nonce_generator = ->(request) { request.session.id.to_s }
+  config.content_security_policy_nonce_generator = ->(request) { SecureRandom.base64(16) }
   config.content_security_policy_nonce_directives = %w(script-src)
   config.content_security_policy_report_only = false
 end
