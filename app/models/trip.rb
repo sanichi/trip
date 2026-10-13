@@ -5,7 +5,7 @@ class Trip < ApplicationRecord
   MAX_DAYS = 90
 
   belongs_to :user, inverse_of: :trips
-  has_many :days, inverse_of: :trip, dependent: :destroy
+  has_many :days, inverse_of: :trip, dependent: :delete_all
 
   scope :ready, -> { where(draft: false) }
 

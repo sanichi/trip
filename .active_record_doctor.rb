@@ -21,9 +21,4 @@ ActiveRecordDoctor.configure do
       "ActiveStorage::Blob",
       "ActiveStorage::VariantRecord",
     ]
-  detector :incorrect_dependent_option,
-    ignore_associations: [
-      # Day has no callbacks today, so delete_all would work; keeping destroy so future callbacks aren't silently skipped
-      "Trip.days",
-    ]
 end
