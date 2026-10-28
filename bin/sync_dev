@@ -1,10 +1,11 @@
 #!/bin/sh
 
-# Start directory is immaterial for DB sync, but important for image data.
-cd "$(dirname "$0")/.."
+# Start directory is immaterial for DB sync (sd infers the app from it, so run from
+# the app root), and the image sync needs it to be the app root.
+cd "$(dirname "$0")/.." || exit 1
 
 # Database (-i or --info for dry-run might get passed in $1).
-sd -d trip -s mor $1
+sd "$@"
 
 # Images (show command if -i or --info, otherwise sync).
 case "$1" in
