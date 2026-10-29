@@ -1,4 +1,5 @@
 server "morioka.sanichi.me", user: "sanichi", roles: %w{web app db}
+
 set :deploy_to, "/var/www/me.trip"
 set :rails_env, "production"
 set :passenger_restart_with_sudo, true
