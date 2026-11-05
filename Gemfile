@@ -40,6 +40,7 @@ group :development do
   gem 'capistrano-bundler', '~> 2.2', require: false
   gem 'capistrano-passenger', '~> 0.2', require: false
   gem 'capistrano-rails', '~> 1.7', require: false
+  gem 'capistrano-maintenance', '~> 1.2', require: false
   gem 'amazing_print', '< 4', require: false
   gem 'listen', '~> 3.2'
   gem 'rails-erd'

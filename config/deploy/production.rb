@@ -3,6 +3,7 @@ server "morioka.sanichi.me", user: "sanichi", roles: %w{web app db}
 set :deploy_to, "/var/www/me.trip"
 set :rails_env, "production"
 set :passenger_restart_with_sudo, true
+set :maintenance_template_path, File.expand_path("../../maintenance.html.erb", __FILE__)
 
 set :rbenv_type, :user
 set :rbenv_ruby, File.read('.ruby-version').strip
