@@ -26,6 +26,3 @@
 /storage
 
 Gemfile.bak
-
-/.claude/*
-!/.claude/CLAUDE.md
